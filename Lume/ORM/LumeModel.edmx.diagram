@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d09016ca020f4715bf4df748ed073eac" Name="Diagram1">
+        <EntityTypeShape EntityType="lume_LumeModel.avatar" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.category_image" Width="1.5" PointX="8.25" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.city" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.country" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.event" Width="1.5" PointX="8.25" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.history" Width="1.5" PointX="7.5" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.image" Width="1.5" PointX="10.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.prize" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.properties_images" Width="1.5" PointX="8.25" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.stock" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.stock_and_image" Width="1.5" PointX="12.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.stock_prize" Width="1.5" PointX="9.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.stock_progress" Width="1.5" PointX="15" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.stock_type" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.type_of_data" Width="1.5" PointX="6" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.type_of_prize" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.user_and_stock" Width="1.5" PointX="12.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="lume_LumeModel.user" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="lume_LumeModel.users_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.Image_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.City_country" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.User_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.event_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.Image_fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_History_History1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_History_Image1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.Image_fk0" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.image_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.Stock_and_Image_fk0" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.prize_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.stock_prize_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_Stock_prize_Stock1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_Stock_Stock_type1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_User_and_Stock_Stock1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.Stock_and_Image_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.stock_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_Stock_progress_User_and_Stock1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_Stock_progress_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="lume_LumeModel.fk_User_and_Stock_User1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

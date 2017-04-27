@@ -1,0 +1,1303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="lume_LumeModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="avatars">
+          <Key>
+            <PropertyRef Name="id_Avatars" />
+          </Key>
+          <Property Name="id_Avatars" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="avatar_src" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="category_image">
+          <Key>
+            <PropertyRef Name="id_category_image" />
+          </Key>
+          <Property Name="id_category_image" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category_image" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="city">
+          <Key>
+            <PropertyRef Name="id_city" />
+          </Key>
+          <Property Name="id_city" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="city_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="id_country" Type="uint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="id_country" />
+          </Key>
+          <Property Name="id_country" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="country_name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="event">
+          <Key>
+            <PropertyRef Name="id_event" />
+          </Key>
+          <Property Name="id_event" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Source" Type="varchar" MaxLength="255" />
+          <Property Name="Type_id_Type" Type="uint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="history">
+          <Key>
+            <PropertyRef Name="id_History" />
+          </Key>
+          <Property Name="id_History" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_user" Type="uint" Nullable="false" />
+          <Property Name="id_image" Type="uint" Nullable="false" />
+          <Property Name="history_N" Type="double" />
+          <Property Name="history_E" Type="double" />
+          <Property Name="Date_scaning" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="image">
+          <Key>
+            <PropertyRef Name="id_image" />
+          </Key>
+          <Property Name="id_image" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_properties" Type="uint" />
+          <Property Name="id_author" Type="uint" />
+          <Property Name="publication_date" Type="datetime" Precision="0" />
+          <Property Name="id_category_image" Type="uint" />
+          <Property Name="id_event" Type="uint" />
+          <Property Name="Image_src" Type="varchar" MaxLength="255" />
+          <Property Name="description_image" Type="varchar" MaxLength="1000" />
+          <Property Name="image_N" Type="double" />
+          <Property Name="image_E" Type="double" />
+          <Property Name="isConfirmed" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="prize">
+          <Key>
+            <PropertyRef Name="id_prize" />
+          </Key>
+          <Property Name="id_prize" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="prize_description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="id_type_prize" Type="uint" Nullable="false" />
+          <Property Name="prize_data" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="properties_images">
+          <Key>
+            <PropertyRef Name="id_propertie" />
+          </Key>
+          <Property Name="id_propertie" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="width_image" Type="int" Nullable="false" />
+          <Property Name="height_image" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stock">
+          <Key>
+            <PropertyRef Name="id_stock" />
+          </Key>
+          <Property Name="id_stock" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="stock_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="id_author" Type="uint" Nullable="false" />
+          <Property Name="description_stock" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="date_begin" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="date_end" Type="datetime" Precision="0" />
+          <Property Name="id_stock_type" Type="uint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stock_and_image">
+          <Key>
+            <PropertyRef Name="id_stock_and_image" />
+          </Key>
+          <Property Name="id_stock_and_image" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_image" Type="uint" Nullable="false" />
+          <Property Name="id_stock" Type="uint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stock_prize">
+          <Key>
+            <PropertyRef Name="id_stock_prize" />
+          </Key>
+          <Property Name="id_stock_prize" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Stock_id_stock" Type="uint" Nullable="false" />
+          <Property Name="id_prize" Type="uint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stock_progress">
+          <Key>
+            <PropertyRef Name="id_stock_progress" />
+          </Key>
+          <Property Name="id_stock_progress" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_user" Type="uint" Nullable="false" />
+          <Property Name="id_stock_and_Image" Type="uint" Nullable="false" />
+          <Property Name="is_scanned" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stock_type">
+          <Key>
+            <PropertyRef Name="id_stock_type" />
+          </Key>
+          <Property Name="id_stock_type" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="stock_type" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="type_of_data">
+          <Key>
+            <PropertyRef Name="id_Type" />
+          </Key>
+          <Property Name="id_Type" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type_data" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="type_of_prize">
+          <Key>
+            <PropertyRef Name="id_type" />
+          </Key>
+          <Property Name="id_type" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="prize_type" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user_and_stock">
+          <Key>
+            <PropertyRef Name="id_User_and_Stock" />
+          </Key>
+          <Property Name="id_User_and_Stock" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_stock" Type="uint" Nullable="false" />
+          <Property Name="id_user" Type="uint" Nullable="false" />
+          <Property Name="stock_progress" Type="bool" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="users_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="users_password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="users_email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="type_user" Type="enum" Nullable="false" />
+          <Property Name="id_city" Type="uint" Nullable="false" />
+          <Property Name="phone_number" Type="varchar" MaxLength="45" />
+          <Property Name="id_avatars" Type="uint" Nullable="false" />
+          <Property Name="users_N" Type="double" />
+          <Property Name="users_E" Type="double" />
+        </EntityType>
+        <Association Name="City_country">
+          <End Role="country" Type="Self.country" Multiplicity="1" />
+          <End Role="city" Type="Self.city" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="id_country" />
+            </Principal>
+            <Dependent Role="city">
+              <PropertyRef Name="id_country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="event_ibfk_1">
+          <End Role="type_of_data" Type="Self.type_of_data" Multiplicity="1" />
+          <End Role="event" Type="Self.event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_of_data">
+              <PropertyRef Name="id_Type" />
+            </Principal>
+            <Dependent Role="event">
+              <PropertyRef Name="Type_id_Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_History_History1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="history" Type="Self.history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="history">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_History_Image1">
+          <End Role="image" Type="Self.image" Multiplicity="1" />
+          <End Role="history" Type="Self.history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="image">
+              <PropertyRef Name="id_image" />
+            </Principal>
+            <Dependent Role="history">
+              <PropertyRef Name="id_image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_prize_Stock1">
+          <End Role="stock" Type="Self.stock" Multiplicity="1" />
+          <End Role="stock_prize" Type="Self.stock_prize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="stock_prize">
+              <PropertyRef Name="Stock_id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_progress_User_and_Stock1">
+          <End Role="stock_and_image" Type="Self.stock_and_image" Multiplicity="1" />
+          <End Role="stock_progress" Type="Self.stock_progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock_and_image">
+              <PropertyRef Name="id_stock_and_image" />
+            </Principal>
+            <Dependent Role="stock_progress">
+              <PropertyRef Name="id_stock_and_Image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_progress_User1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="stock_progress" Type="Self.stock_progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="stock_progress">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_Stock_type1">
+          <End Role="stock_type" Type="Self.stock_type" Multiplicity="1" />
+          <End Role="stock" Type="Self.stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock_type">
+              <PropertyRef Name="id_stock_type" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="id_stock_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_User_and_Stock_Stock1">
+          <End Role="stock" Type="Self.stock" Multiplicity="1" />
+          <End Role="user_and_stock" Type="Self.user_and_stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="user_and_stock">
+              <PropertyRef Name="id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_User_and_Stock_User1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="user_and_stock" Type="Self.user_and_stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="user_and_stock">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Image_fk0">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Image_fk1">
+          <End Role="category_image" Type="Self.category_image" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_image">
+              <PropertyRef Name="id_category_image" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_category_image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Image_fk2">
+          <End Role="event" Type="Self.event" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="event">
+              <PropertyRef Name="id_event" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="image_ibfk_1">
+          <End Role="properties_images" Type="Self.properties_images" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="properties_images">
+              <PropertyRef Name="id_propertie" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_properties" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="prize_ibfk_1">
+          <End Role="type_of_prize" Type="Self.type_of_prize" Multiplicity="1" />
+          <End Role="prize" Type="Self.prize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_of_prize">
+              <PropertyRef Name="id_type" />
+            </Principal>
+            <Dependent Role="prize">
+              <PropertyRef Name="id_type_prize" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Stock_and_Image_fk0">
+          <End Role="image" Type="Self.image" Multiplicity="1" />
+          <End Role="stock_and_image" Type="Self.stock_and_image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="image">
+              <PropertyRef Name="id_image" />
+            </Principal>
+            <Dependent Role="stock_and_image">
+              <PropertyRef Name="id_image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Stock_and_Image_fk1">
+          <End Role="stock" Type="Self.stock" Multiplicity="1" />
+          <End Role="stock_and_image" Type="Self.stock_and_image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="stock_and_image">
+              <PropertyRef Name="id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="stock_ibfk_1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="stock" Type="Self.stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="id_author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="stock_prize_ibfk_1">
+          <End Role="prize" Type="Self.prize" Multiplicity="1" />
+          <End Role="stock_prize" Type="Self.stock_prize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="prize">
+              <PropertyRef Name="id_prize" />
+            </Principal>
+            <Dependent Role="stock_prize">
+              <PropertyRef Name="id_prize" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="User_fk1">
+          <End Role="city" Type="Self.city" Multiplicity="1" />
+          <End Role="users" Type="Self.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="city">
+              <PropertyRef Name="id_city" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="id_city" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="users_ibfk_1">
+          <End Role="avatars" Type="Self.avatars" Multiplicity="1" />
+          <End Role="users" Type="Self.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="avatars">
+              <PropertyRef Name="id_Avatars" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="id_avatars" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="lume_LumeModelStoreContainer">
+          <EntitySet Name="avatars" EntityType="Self.avatars" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="category_image" EntityType="Self.category_image" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="city" EntityType="Self.city" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="country" EntityType="Self.country" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="event" EntityType="Self.event" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="history" EntityType="Self.history" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="image" EntityType="Self.image" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="prize" EntityType="Self.prize" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="properties_images" EntityType="Self.properties_images" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="stock" EntityType="Self.stock" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="stock_and_image" EntityType="Self.stock_and_image" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="stock_prize" EntityType="Self.stock_prize" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="stock_progress" EntityType="Self.stock_progress" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="stock_type" EntityType="Self.stock_type" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="type_of_data" EntityType="Self.type_of_data" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="type_of_prize" EntityType="Self.type_of_prize" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="user_and_stock" EntityType="Self.user_and_stock" Schema="lume_Lume" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="lume_Lume" store:Type="Tables" />
+          <AssociationSet Name="City_country" Association="Self.City_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="city" EntitySet="city" />
+          </AssociationSet>
+          <AssociationSet Name="event_ibfk_1" Association="Self.event_ibfk_1">
+            <End Role="type_of_data" EntitySet="type_of_data" />
+            <End Role="event" EntitySet="event" />
+          </AssociationSet>
+          <AssociationSet Name="fk_History_History1" Association="Self.fk_History_History1">
+            <End Role="users" EntitySet="users" />
+            <End Role="history" EntitySet="history" />
+          </AssociationSet>
+          <AssociationSet Name="fk_History_Image1" Association="Self.fk_History_Image1">
+            <End Role="image" EntitySet="image" />
+            <End Role="history" EntitySet="history" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_prize_Stock1" Association="Self.fk_Stock_prize_Stock1">
+            <End Role="stock" EntitySet="stock" />
+            <End Role="stock_prize" EntitySet="stock_prize" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_progress_User_and_Stock1" Association="Self.fk_Stock_progress_User_and_Stock1">
+            <End Role="stock_and_image" EntitySet="stock_and_image" />
+            <End Role="stock_progress" EntitySet="stock_progress" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_progress_User1" Association="Self.fk_Stock_progress_User1">
+            <End Role="users" EntitySet="users" />
+            <End Role="stock_progress" EntitySet="stock_progress" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_Stock_type1" Association="Self.fk_Stock_Stock_type1">
+            <End Role="stock_type" EntitySet="stock_type" />
+            <End Role="stock" EntitySet="stock" />
+          </AssociationSet>
+          <AssociationSet Name="fk_User_and_Stock_Stock1" Association="Self.fk_User_and_Stock_Stock1">
+            <End Role="stock" EntitySet="stock" />
+            <End Role="user_and_stock" EntitySet="user_and_stock" />
+          </AssociationSet>
+          <AssociationSet Name="fk_User_and_Stock_User1" Association="Self.fk_User_and_Stock_User1">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_and_stock" EntitySet="user_and_stock" />
+          </AssociationSet>
+          <AssociationSet Name="Image_fk0" Association="Self.Image_fk0">
+            <End Role="users" EntitySet="users" />
+            <End Role="image" EntitySet="image" />
+          </AssociationSet>
+          <AssociationSet Name="Image_fk1" Association="Self.Image_fk1">
+            <End Role="category_image" EntitySet="category_image" />
+            <End Role="image" EntitySet="image" />
+          </AssociationSet>
+          <AssociationSet Name="Image_fk2" Association="Self.Image_fk2">
+            <End Role="event" EntitySet="event" />
+            <End Role="image" EntitySet="image" />
+          </AssociationSet>
+          <AssociationSet Name="image_ibfk_1" Association="Self.image_ibfk_1">
+            <End Role="properties_images" EntitySet="properties_images" />
+            <End Role="image" EntitySet="image" />
+          </AssociationSet>
+          <AssociationSet Name="prize_ibfk_1" Association="Self.prize_ibfk_1">
+            <End Role="type_of_prize" EntitySet="type_of_prize" />
+            <End Role="prize" EntitySet="prize" />
+          </AssociationSet>
+          <AssociationSet Name="Stock_and_Image_fk0" Association="Self.Stock_and_Image_fk0">
+            <End Role="image" EntitySet="image" />
+            <End Role="stock_and_image" EntitySet="stock_and_image" />
+          </AssociationSet>
+          <AssociationSet Name="Stock_and_Image_fk1" Association="Self.Stock_and_Image_fk1">
+            <End Role="stock" EntitySet="stock" />
+            <End Role="stock_and_image" EntitySet="stock_and_image" />
+          </AssociationSet>
+          <AssociationSet Name="stock_ibfk_1" Association="Self.stock_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="stock" EntitySet="stock" />
+          </AssociationSet>
+          <AssociationSet Name="stock_prize_ibfk_1" Association="Self.stock_prize_ibfk_1">
+            <End Role="prize" EntitySet="prize" />
+            <End Role="stock_prize" EntitySet="stock_prize" />
+          </AssociationSet>
+          <AssociationSet Name="User_fk1" Association="Self.User_fk1">
+            <End Role="city" EntitySet="city" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="users_ibfk_1" Association="Self.users_ibfk_1">
+            <End Role="avatars" EntitySet="avatars" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="lume_LumeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="avatar">
+          <Key>
+            <PropertyRef Name="id_Avatars" />
+          </Key>
+          <Property Name="id_Avatars" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="avatar_src" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="users" Relationship="Self.users_ibfk_1" FromRole="avatars" ToRole="users" />
+        </EntityType>
+        <EntityType Name="category_image">
+          <Key>
+            <PropertyRef Name="id_category_image" />
+          </Key>
+          <Property Name="id_category_image" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category_image1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="images" Relationship="Self.Image_fk1" FromRole="category_image" ToRole="image" />
+        </EntityType>
+        <EntityType Name="city">
+          <Key>
+            <PropertyRef Name="id_city" />
+          </Key>
+          <Property Name="id_city" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="city_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_country" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="country" Relationship="Self.City_country" FromRole="city" ToRole="country" />
+          <NavigationProperty Name="users" Relationship="Self.User_fk1" FromRole="city" ToRole="users" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="id_country" />
+          </Key>
+          <Property Name="id_country" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="country_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cities" Relationship="Self.City_country" FromRole="country" ToRole="city" />
+        </EntityType>
+        <EntityType Name="event">
+          <Key>
+            <PropertyRef Name="id_event" />
+          </Key>
+          <Property Name="id_event" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Source" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Type_id_Type" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="type_of_data" Relationship="Self.event_ibfk_1" FromRole="event" ToRole="type_of_data" />
+          <NavigationProperty Name="images" Relationship="Self.Image_fk2" FromRole="event" ToRole="image" />
+        </EntityType>
+        <EntityType Name="history">
+          <Key>
+            <PropertyRef Name="id_History" />
+          </Key>
+          <Property Name="id_History" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_user" Type="Int64" Nullable="false" />
+          <Property Name="id_image" Type="Int64" Nullable="false" />
+          <Property Name="history_N" Type="Double" />
+          <Property Name="history_E" Type="Double" />
+          <Property Name="Date_scaning" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="Self.fk_History_History1" FromRole="history" ToRole="users" />
+          <NavigationProperty Name="image" Relationship="Self.fk_History_Image1" FromRole="history" ToRole="image" />
+        </EntityType>
+        <EntityType Name="image">
+          <Key>
+            <PropertyRef Name="id_image" />
+          </Key>
+          <Property Name="id_image" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_properties" Type="Int64" />
+          <Property Name="id_author" Type="Int64" />
+          <Property Name="publication_date" Type="DateTime" />
+          <Property Name="id_category_image" Type="Int64" />
+          <Property Name="id_event" Type="Int64" />
+          <Property Name="Image_src" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="description_image" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="image_N" Type="Double" />
+          <Property Name="image_E" Type="Double" />
+          <Property Name="isConfirmed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="category_image" Relationship="Self.Image_fk1" FromRole="image" ToRole="category_image" />
+          <NavigationProperty Name="event" Relationship="Self.Image_fk2" FromRole="image" ToRole="event" />
+          <NavigationProperty Name="histories" Relationship="Self.fk_History_Image1" FromRole="image" ToRole="history" />
+          <NavigationProperty Name="user" Relationship="Self.Image_fk0" FromRole="image" ToRole="users" />
+          <NavigationProperty Name="properties_images" Relationship="Self.image_ibfk_1" FromRole="image" ToRole="properties_images" />
+          <NavigationProperty Name="stock_and_image" Relationship="Self.Stock_and_Image_fk0" FromRole="image" ToRole="stock_and_image" />
+        </EntityType>
+        <EntityType Name="prize">
+          <Key>
+            <PropertyRef Name="id_prize" />
+          </Key>
+          <Property Name="id_prize" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="prize_description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_type_prize" Type="Int64" Nullable="false" />
+          <Property Name="prize_data" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="type_of_prize" Relationship="Self.prize_ibfk_1" FromRole="prize" ToRole="type_of_prize" />
+          <NavigationProperty Name="stock_prize" Relationship="Self.stock_prize_ibfk_1" FromRole="prize" ToRole="stock_prize" />
+        </EntityType>
+        <EntityType Name="properties_images">
+          <Key>
+            <PropertyRef Name="id_propertie" />
+          </Key>
+          <Property Name="id_propertie" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="width_image" Type="Int32" Nullable="false" />
+          <Property Name="height_image" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="images" Relationship="Self.image_ibfk_1" FromRole="properties_images" ToRole="image" />
+        </EntityType>
+        <EntityType Name="stock">
+          <Key>
+            <PropertyRef Name="id_stock" />
+          </Key>
+          <Property Name="id_stock" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="stock_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_author" Type="Int64" Nullable="false" />
+          <Property Name="description_stock" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="date_begin" Type="DateTime" Nullable="false" />
+          <Property Name="date_end" Type="DateTime" />
+          <Property Name="id_stock_type" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="stock_prize" Relationship="Self.fk_Stock_prize_Stock1" FromRole="stock" ToRole="stock_prize" />
+          <NavigationProperty Name="stock_type" Relationship="Self.fk_Stock_Stock_type1" FromRole="stock" ToRole="stock_type" />
+          <NavigationProperty Name="user_and_stock" Relationship="Self.fk_User_and_Stock_Stock1" FromRole="stock" ToRole="user_and_stock" />
+          <NavigationProperty Name="stock_and_image" Relationship="Self.Stock_and_Image_fk1" FromRole="stock" ToRole="stock_and_image" />
+          <NavigationProperty Name="user" Relationship="Self.stock_ibfk_1" FromRole="stock" ToRole="users" />
+        </EntityType>
+        <EntityType Name="stock_and_image">
+          <Key>
+            <PropertyRef Name="id_stock_and_image" />
+          </Key>
+          <Property Name="id_stock_and_image" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_image" Type="Int64" Nullable="false" />
+          <Property Name="id_stock" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="image" Relationship="Self.Stock_and_Image_fk0" FromRole="stock_and_image" ToRole="image" />
+          <NavigationProperty Name="stock" Relationship="Self.Stock_and_Image_fk1" FromRole="stock_and_image" ToRole="stock" />
+          <NavigationProperty Name="stock_progress" Relationship="Self.fk_Stock_progress_User_and_Stock1" FromRole="stock_and_image" ToRole="stock_progress" />
+        </EntityType>
+        <EntityType Name="stock_prize">
+          <Key>
+            <PropertyRef Name="id_stock_prize" />
+          </Key>
+          <Property Name="id_stock_prize" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Stock_id_stock" Type="Int64" Nullable="false" />
+          <Property Name="id_prize" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="prize" Relationship="Self.stock_prize_ibfk_1" FromRole="stock_prize" ToRole="prize" />
+          <NavigationProperty Name="stock" Relationship="Self.fk_Stock_prize_Stock1" FromRole="stock_prize" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="stock_progress">
+          <Key>
+            <PropertyRef Name="id_stock_progress" />
+          </Key>
+          <Property Name="id_stock_progress" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_user" Type="Int64" Nullable="false" />
+          <Property Name="id_stock_and_Image" Type="Int64" Nullable="false" />
+          <Property Name="is_scanned" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="stock_and_image" Relationship="Self.fk_Stock_progress_User_and_Stock1" FromRole="stock_progress" ToRole="stock_and_image" />
+          <NavigationProperty Name="user" Relationship="Self.fk_Stock_progress_User1" FromRole="stock_progress" ToRole="users" />
+        </EntityType>
+        <EntityType Name="stock_type">
+          <Key>
+            <PropertyRef Name="id_stock_type" />
+          </Key>
+          <Property Name="id_stock_type" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="stock_type1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="stocks" Relationship="Self.fk_Stock_Stock_type1" FromRole="stock_type" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="type_of_data">
+          <Key>
+            <PropertyRef Name="id_Type" />
+          </Key>
+          <Property Name="id_Type" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type_data" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="events" Relationship="Self.event_ibfk_1" FromRole="type_of_data" ToRole="event" />
+        </EntityType>
+        <EntityType Name="type_of_prize">
+          <Key>
+            <PropertyRef Name="id_type" />
+          </Key>
+          <Property Name="id_type" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="prize_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="prizes" Relationship="Self.prize_ibfk_1" FromRole="type_of_prize" ToRole="prize" />
+        </EntityType>
+        <EntityType Name="user_and_stock">
+          <Key>
+            <PropertyRef Name="id_User_and_Stock" />
+          </Key>
+          <Property Name="id_User_and_Stock" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_stock" Type="Int64" Nullable="false" />
+          <Property Name="id_user" Type="Int64" Nullable="false" />
+          <Property Name="stock_progress" Type="Boolean" />
+          <NavigationProperty Name="stock" Relationship="Self.fk_User_and_Stock_Stock1" FromRole="user_and_stock" ToRole="stock" />
+          <NavigationProperty Name="user" Relationship="Self.fk_User_and_Stock_User1" FromRole="user_and_stock" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="users_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="users_password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="users_email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="type_user" Type="String" MaxLength="65532" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_city" Type="Int64" Nullable="false" />
+          <Property Name="phone_number" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="id_avatars" Type="Int64" Nullable="false" />
+          <Property Name="users_N" Type="Double" />
+          <Property Name="users_E" Type="Double" />
+          <NavigationProperty Name="avatar" Relationship="Self.users_ibfk_1" FromRole="users" ToRole="avatars" />
+          <NavigationProperty Name="city" Relationship="Self.User_fk1" FromRole="users" ToRole="city" />
+          <NavigationProperty Name="histories" Relationship="Self.fk_History_History1" FromRole="users" ToRole="history" />
+          <NavigationProperty Name="images" Relationship="Self.Image_fk0" FromRole="users" ToRole="image" />
+          <NavigationProperty Name="stocks" Relationship="Self.stock_ibfk_1" FromRole="users" ToRole="stock" />
+          <NavigationProperty Name="stock_progress" Relationship="Self.fk_Stock_progress_User1" FromRole="users" ToRole="stock_progress" />
+          <NavigationProperty Name="user_and_stock" Relationship="Self.fk_User_and_Stock_User1" FromRole="users" ToRole="user_and_stock" />
+        </EntityType>
+        <Association Name="users_ibfk_1">
+          <End Role="avatars" Type="Self.avatar" Multiplicity="1" />
+          <End Role="users" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="avatars">
+              <PropertyRef Name="id_Avatars" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="id_avatars" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Image_fk1">
+          <End Role="category_image" Type="Self.category_image" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_image">
+              <PropertyRef Name="id_category_image" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_category_image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="City_country">
+          <End Role="country" Type="Self.country" Multiplicity="1" />
+          <End Role="city" Type="Self.city" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="id_country" />
+            </Principal>
+            <Dependent Role="city">
+              <PropertyRef Name="id_country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="User_fk1">
+          <End Role="city" Type="Self.city" Multiplicity="1" />
+          <End Role="users" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="city">
+              <PropertyRef Name="id_city" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="id_city" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="event_ibfk_1">
+          <End Role="type_of_data" Type="Self.type_of_data" Multiplicity="1" />
+          <End Role="event" Type="Self.event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_of_data">
+              <PropertyRef Name="id_Type" />
+            </Principal>
+            <Dependent Role="event">
+              <PropertyRef Name="Type_id_Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Image_fk2">
+          <End Role="event" Type="Self.event" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="event">
+              <PropertyRef Name="id_event" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_History_History1">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="history" Type="Self.history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="history">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_History_Image1">
+          <End Role="image" Type="Self.image" Multiplicity="1" />
+          <End Role="history" Type="Self.history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="image">
+              <PropertyRef Name="id_image" />
+            </Principal>
+            <Dependent Role="history">
+              <PropertyRef Name="id_image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Image_fk0">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="image_ibfk_1">
+          <End Role="properties_images" Type="Self.properties_images" Multiplicity="0..1" />
+          <End Role="image" Type="Self.image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="properties_images">
+              <PropertyRef Name="id_propertie" />
+            </Principal>
+            <Dependent Role="image">
+              <PropertyRef Name="id_properties" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Stock_and_Image_fk0">
+          <End Role="image" Type="Self.image" Multiplicity="1" />
+          <End Role="stock_and_image" Type="Self.stock_and_image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="image">
+              <PropertyRef Name="id_image" />
+            </Principal>
+            <Dependent Role="stock_and_image">
+              <PropertyRef Name="id_image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="prize_ibfk_1">
+          <End Role="type_of_prize" Type="Self.type_of_prize" Multiplicity="1" />
+          <End Role="prize" Type="Self.prize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_of_prize">
+              <PropertyRef Name="id_type" />
+            </Principal>
+            <Dependent Role="prize">
+              <PropertyRef Name="id_type_prize" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="stock_prize_ibfk_1">
+          <End Role="prize" Type="Self.prize" Multiplicity="1" />
+          <End Role="stock_prize" Type="Self.stock_prize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="prize">
+              <PropertyRef Name="id_prize" />
+            </Principal>
+            <Dependent Role="stock_prize">
+              <PropertyRef Name="id_prize" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_prize_Stock1">
+          <End Role="stock" Type="Self.stock" Multiplicity="1" />
+          <End Role="stock_prize" Type="Self.stock_prize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="stock_prize">
+              <PropertyRef Name="Stock_id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_Stock_type1">
+          <End Role="stock_type" Type="Self.stock_type" Multiplicity="1" />
+          <End Role="stock" Type="Self.stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock_type">
+              <PropertyRef Name="id_stock_type" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="id_stock_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_User_and_Stock_Stock1">
+          <End Role="stock" Type="Self.stock" Multiplicity="1" />
+          <End Role="user_and_stock" Type="Self.user_and_stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="user_and_stock">
+              <PropertyRef Name="id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Stock_and_Image_fk1">
+          <End Role="stock" Type="Self.stock" Multiplicity="1" />
+          <End Role="stock_and_image" Type="Self.stock_and_image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="stock_and_image">
+              <PropertyRef Name="id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="stock_ibfk_1">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="stock" Type="Self.stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="id_author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_progress_User_and_Stock1">
+          <End Role="stock_and_image" Type="Self.stock_and_image" Multiplicity="1" />
+          <End Role="stock_progress" Type="Self.stock_progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock_and_image">
+              <PropertyRef Name="id_stock_and_image" />
+            </Principal>
+            <Dependent Role="stock_progress">
+              <PropertyRef Name="id_stock_and_Image" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Stock_progress_User1">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="stock_progress" Type="Self.stock_progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="stock_progress">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_User_and_Stock_User1">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="user_and_stock" Type="Self.user_and_stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="user_and_stock">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="lume_LumeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="avatars" EntityType="Self.avatar" />
+          <EntitySet Name="category_image" EntityType="Self.category_image" />
+          <EntitySet Name="cities" EntityType="Self.city" />
+          <EntitySet Name="countries" EntityType="Self.country" />
+          <EntitySet Name="events" EntityType="Self.event" />
+          <EntitySet Name="histories" EntityType="Self.history" />
+          <EntitySet Name="images" EntityType="Self.image" />
+          <EntitySet Name="prizes" EntityType="Self.prize" />
+          <EntitySet Name="properties_images" EntityType="Self.properties_images" />
+          <EntitySet Name="stocks" EntityType="Self.stock" />
+          <EntitySet Name="stock_and_image" EntityType="Self.stock_and_image" />
+          <EntitySet Name="stock_prize" EntityType="Self.stock_prize" />
+          <EntitySet Name="stock_progress" EntityType="Self.stock_progress" />
+          <EntitySet Name="stock_type" EntityType="Self.stock_type" />
+          <EntitySet Name="type_of_data" EntityType="Self.type_of_data" />
+          <EntitySet Name="type_of_prize" EntityType="Self.type_of_prize" />
+          <EntitySet Name="user_and_stock" EntityType="Self.user_and_stock" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="users_ibfk_1" Association="Self.users_ibfk_1">
+            <End Role="avatars" EntitySet="avatars" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="Image_fk1" Association="Self.Image_fk1">
+            <End Role="category_image" EntitySet="category_image" />
+            <End Role="image" EntitySet="images" />
+          </AssociationSet>
+          <AssociationSet Name="City_country" Association="Self.City_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="city" EntitySet="cities" />
+          </AssociationSet>
+          <AssociationSet Name="User_fk1" Association="Self.User_fk1">
+            <End Role="city" EntitySet="cities" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="event_ibfk_1" Association="Self.event_ibfk_1">
+            <End Role="type_of_data" EntitySet="type_of_data" />
+            <End Role="event" EntitySet="events" />
+          </AssociationSet>
+          <AssociationSet Name="Image_fk2" Association="Self.Image_fk2">
+            <End Role="event" EntitySet="events" />
+            <End Role="image" EntitySet="images" />
+          </AssociationSet>
+          <AssociationSet Name="fk_History_History1" Association="Self.fk_History_History1">
+            <End Role="users" EntitySet="users" />
+            <End Role="history" EntitySet="histories" />
+          </AssociationSet>
+          <AssociationSet Name="fk_History_Image1" Association="Self.fk_History_Image1">
+            <End Role="image" EntitySet="images" />
+            <End Role="history" EntitySet="histories" />
+          </AssociationSet>
+          <AssociationSet Name="Image_fk0" Association="Self.Image_fk0">
+            <End Role="users" EntitySet="users" />
+            <End Role="image" EntitySet="images" />
+          </AssociationSet>
+          <AssociationSet Name="image_ibfk_1" Association="Self.image_ibfk_1">
+            <End Role="properties_images" EntitySet="properties_images" />
+            <End Role="image" EntitySet="images" />
+          </AssociationSet>
+          <AssociationSet Name="Stock_and_Image_fk0" Association="Self.Stock_and_Image_fk0">
+            <End Role="image" EntitySet="images" />
+            <End Role="stock_and_image" EntitySet="stock_and_image" />
+          </AssociationSet>
+          <AssociationSet Name="prize_ibfk_1" Association="Self.prize_ibfk_1">
+            <End Role="type_of_prize" EntitySet="type_of_prize" />
+            <End Role="prize" EntitySet="prizes" />
+          </AssociationSet>
+          <AssociationSet Name="stock_prize_ibfk_1" Association="Self.stock_prize_ibfk_1">
+            <End Role="prize" EntitySet="prizes" />
+            <End Role="stock_prize" EntitySet="stock_prize" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_prize_Stock1" Association="Self.fk_Stock_prize_Stock1">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="stock_prize" EntitySet="stock_prize" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_Stock_type1" Association="Self.fk_Stock_Stock_type1">
+            <End Role="stock_type" EntitySet="stock_type" />
+            <End Role="stock" EntitySet="stocks" />
+          </AssociationSet>
+          <AssociationSet Name="fk_User_and_Stock_Stock1" Association="Self.fk_User_and_Stock_Stock1">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="user_and_stock" EntitySet="user_and_stock" />
+          </AssociationSet>
+          <AssociationSet Name="Stock_and_Image_fk1" Association="Self.Stock_and_Image_fk1">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="stock_and_image" EntitySet="stock_and_image" />
+          </AssociationSet>
+          <AssociationSet Name="stock_ibfk_1" Association="Self.stock_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="stock" EntitySet="stocks" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_progress_User_and_Stock1" Association="Self.fk_Stock_progress_User_and_Stock1">
+            <End Role="stock_and_image" EntitySet="stock_and_image" />
+            <End Role="stock_progress" EntitySet="stock_progress" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Stock_progress_User1" Association="Self.fk_Stock_progress_User1">
+            <End Role="users" EntitySet="users" />
+            <End Role="stock_progress" EntitySet="stock_progress" />
+          </AssociationSet>
+          <AssociationSet Name="fk_User_and_Stock_User1" Association="Self.fk_User_and_Stock_User1">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_and_stock" EntitySet="user_and_stock" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="lume_LumeModelStoreContainer" CdmEntityContainer="lume_LumeEntities">
+          <EntitySetMapping Name="avatars">
+            <EntityTypeMapping TypeName="lume_LumeModel.avatar">
+              <MappingFragment StoreEntitySet="avatars">
+                <ScalarProperty Name="id_Avatars" ColumnName="id_Avatars" />
+                <ScalarProperty Name="avatar_src" ColumnName="avatar_src" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="category_image">
+            <EntityTypeMapping TypeName="lume_LumeModel.category_image">
+              <MappingFragment StoreEntitySet="category_image">
+                <ScalarProperty Name="id_category_image" ColumnName="id_category_image" />
+                <ScalarProperty Name="category_image1" ColumnName="category_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cities">
+            <EntityTypeMapping TypeName="lume_LumeModel.city">
+              <MappingFragment StoreEntitySet="city">
+                <ScalarProperty Name="id_city" ColumnName="id_city" />
+                <ScalarProperty Name="city_name" ColumnName="city_name" />
+                <ScalarProperty Name="id_country" ColumnName="id_country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="countries">
+            <EntityTypeMapping TypeName="lume_LumeModel.country">
+              <MappingFragment StoreEntitySet="country">
+                <ScalarProperty Name="id_country" ColumnName="id_country" />
+                <ScalarProperty Name="country_name" ColumnName="country_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="events">
+            <EntityTypeMapping TypeName="lume_LumeModel.event">
+              <MappingFragment StoreEntitySet="event">
+                <ScalarProperty Name="id_event" ColumnName="id_event" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Type_id_Type" ColumnName="Type_id_Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="histories">
+            <EntityTypeMapping TypeName="lume_LumeModel.history">
+              <MappingFragment StoreEntitySet="history">
+                <ScalarProperty Name="id_History" ColumnName="id_History" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_image" ColumnName="id_image" />
+                <ScalarProperty Name="history_N" ColumnName="history_N" />
+                <ScalarProperty Name="history_E" ColumnName="history_E" />
+                <ScalarProperty Name="Date_scaning" ColumnName="Date_scaning" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="images">
+            <EntityTypeMapping TypeName="lume_LumeModel.image">
+              <MappingFragment StoreEntitySet="image">
+                <ScalarProperty Name="id_image" ColumnName="id_image" />
+                <ScalarProperty Name="id_properties" ColumnName="id_properties" />
+                <ScalarProperty Name="id_author" ColumnName="id_author" />
+                <ScalarProperty Name="publication_date" ColumnName="publication_date" />
+                <ScalarProperty Name="id_category_image" ColumnName="id_category_image" />
+                <ScalarProperty Name="id_event" ColumnName="id_event" />
+                <ScalarProperty Name="Image_src" ColumnName="Image_src" />
+                <ScalarProperty Name="description_image" ColumnName="description_image" />
+                <ScalarProperty Name="image_N" ColumnName="image_N" />
+                <ScalarProperty Name="image_E" ColumnName="image_E" />
+                <ScalarProperty Name="isConfirmed" ColumnName="isConfirmed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="prizes">
+            <EntityTypeMapping TypeName="lume_LumeModel.prize">
+              <MappingFragment StoreEntitySet="prize">
+                <ScalarProperty Name="id_prize" ColumnName="id_prize" />
+                <ScalarProperty Name="prize_description" ColumnName="prize_description" />
+                <ScalarProperty Name="id_type_prize" ColumnName="id_type_prize" />
+                <ScalarProperty Name="prize_data" ColumnName="prize_data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="properties_images">
+            <EntityTypeMapping TypeName="lume_LumeModel.properties_images">
+              <MappingFragment StoreEntitySet="properties_images">
+                <ScalarProperty Name="id_propertie" ColumnName="id_propertie" />
+                <ScalarProperty Name="width_image" ColumnName="width_image" />
+                <ScalarProperty Name="height_image" ColumnName="height_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stocks">
+            <EntityTypeMapping TypeName="lume_LumeModel.stock">
+              <MappingFragment StoreEntitySet="stock">
+                <ScalarProperty Name="id_stock" ColumnName="id_stock" />
+                <ScalarProperty Name="stock_name" ColumnName="stock_name" />
+                <ScalarProperty Name="id_author" ColumnName="id_author" />
+                <ScalarProperty Name="description_stock" ColumnName="description_stock" />
+                <ScalarProperty Name="date_begin" ColumnName="date_begin" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="id_stock_type" ColumnName="id_stock_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stock_and_image">
+            <EntityTypeMapping TypeName="lume_LumeModel.stock_and_image">
+              <MappingFragment StoreEntitySet="stock_and_image">
+                <ScalarProperty Name="id_stock_and_image" ColumnName="id_stock_and_image" />
+                <ScalarProperty Name="id_image" ColumnName="id_image" />
+                <ScalarProperty Name="id_stock" ColumnName="id_stock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stock_prize">
+            <EntityTypeMapping TypeName="lume_LumeModel.stock_prize">
+              <MappingFragment StoreEntitySet="stock_prize">
+                <ScalarProperty Name="id_stock_prize" ColumnName="id_stock_prize" />
+                <ScalarProperty Name="Stock_id_stock" ColumnName="Stock_id_stock" />
+                <ScalarProperty Name="id_prize" ColumnName="id_prize" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stock_progress">
+            <EntityTypeMapping TypeName="lume_LumeModel.stock_progress">
+              <MappingFragment StoreEntitySet="stock_progress">
+                <ScalarProperty Name="id_stock_progress" ColumnName="id_stock_progress" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_stock_and_Image" ColumnName="id_stock_and_Image" />
+                <ScalarProperty Name="is_scanned" ColumnName="is_scanned" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stock_type">
+            <EntityTypeMapping TypeName="lume_LumeModel.stock_type">
+              <MappingFragment StoreEntitySet="stock_type">
+                <ScalarProperty Name="id_stock_type" ColumnName="id_stock_type" />
+                <ScalarProperty Name="stock_type1" ColumnName="stock_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="type_of_data">
+            <EntityTypeMapping TypeName="lume_LumeModel.type_of_data">
+              <MappingFragment StoreEntitySet="type_of_data">
+                <ScalarProperty Name="id_Type" ColumnName="id_Type" />
+                <ScalarProperty Name="type_data" ColumnName="type_data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="type_of_prize">
+            <EntityTypeMapping TypeName="lume_LumeModel.type_of_prize">
+              <MappingFragment StoreEntitySet="type_of_prize">
+                <ScalarProperty Name="id_type" ColumnName="id_type" />
+                <ScalarProperty Name="prize_type" ColumnName="prize_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_and_stock">
+            <EntityTypeMapping TypeName="lume_LumeModel.user_and_stock">
+              <MappingFragment StoreEntitySet="user_and_stock">
+                <ScalarProperty Name="id_User_and_Stock" ColumnName="id_User_and_Stock" />
+                <ScalarProperty Name="id_stock" ColumnName="id_stock" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="stock_progress" ColumnName="stock_progress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="lume_LumeModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+                <ScalarProperty Name="users_password" ColumnName="users_password" />
+                <ScalarProperty Name="users_email" ColumnName="users_email" />
+                <ScalarProperty Name="type_user" ColumnName="type_user" />
+                <ScalarProperty Name="id_city" ColumnName="id_city" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="id_avatars" ColumnName="id_avatars" />
+                <ScalarProperty Name="users_N" ColumnName="users_N" />
+                <ScalarProperty Name="users_E" ColumnName="users_E" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
