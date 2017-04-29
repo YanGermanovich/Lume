@@ -26,7 +26,7 @@ namespace DAL.DalToOrmMappers
             };
         }
 
-        public static DalStock ToOrm(this stock st)
+        public static DalStock ToDal(this stock st)
         {
             if (st == null)
                 throw new ArgumentNullException(nameof(st));

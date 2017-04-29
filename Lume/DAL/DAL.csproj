@@ -30,8 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,33 +45,67 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concrete\AvatarRepository.cs" />
+    <Compile Include="Concrete\CityRepository.cs" />
+    <Compile Include="Concrete\CountryRepository.cs" />
+    <Compile Include="Concrete\DataTypeRepository.cs" />
+    <Compile Include="Concrete\EventRepository.cs" />
+    <Compile Include="Concrete\HistoryRepository.cs" />
+    <Compile Include="Concrete\ImagePropertiesRepository.cs" />
+    <Compile Include="Concrete\ImageRepository.cs" />
+    <Compile Include="Concrete\PrizeRepository.cs" />
+    <Compile Include="Concrete\PrizeTypeRepository.cs" />
+    <Compile Include="Concrete\StockImageRepository.cs" />
+    <Compile Include="Concrete\StockPrizeRepository.cs" />
+    <Compile Include="Concrete\StockProgressRepository.cs" />
+    <Compile Include="Concrete\StockRepository.cs" />
+    <Compile Include="Concrete\StockTypeRepository.cs" />
+    <Compile Include="Concrete\UnitOfWork.cs" />
+    <Compile Include="Concrete\UserRepository.cs" />
+    <Compile Include="Concrete\UserStockRepository.cs" />
     <Compile Include="DalToOrmMappers\AvatarMapper.cs" />
     <Compile Include="DalToOrmMappers\CityMapper.cs" />
     <Compile Include="DalToOrmMappers\CountryMapper.cs" />
+    <Compile Include="DalToOrmMappers\DataTypeMapper.cs" />
     <Compile Include="DalToOrmMappers\EventMapper.cs" />
     <Compile Include="DalToOrmMappers\HistoryMapper.cs" />
     <Compile Include="DalToOrmMappers\ImageCategoryMapper.cs" />
     <Compile Include="DalToOrmMappers\ImageMapper.cs" />
     <Compile Include="DalToOrmMappers\ImagePropertiesMapper.cs" />
     <Compile Include="DalToOrmMappers\PrizeMapper.cs" />
+    <Compile Include="DalToOrmMappers\PrizeTypeMapper.cs" />
+    <Compile Include="DalToOrmMappers\StockImageMapper.cs" />
     <Compile Include="DalToOrmMappers\StockMapper.cs" />
+    <Compile Include="DalToOrmMappers\StockPrizeMapper.cs" />
+    <Compile Include="DalToOrmMappers\StockProgressMapper.cs" />
+    <Compile Include="DalToOrmMappers\StockTypeMapper.cs" />
+    <Compile Include="DalToOrmMappers\UserMapper.cs" />
+    <Compile Include="DalToOrmMappers\UserStockMapper.cs" />
     <Compile Include="DTO\DalAvatar.cs" />
     <Compile Include="DTO\DalCity.cs" />
     <Compile Include="DTO\DalCountry.cs" />
+    <Compile Include="DTO\DalDataType.cs" />
     <Compile Include="DTO\DalEvent.cs" />
     <Compile Include="DTO\DalHistory.cs" />
     <Compile Include="DTO\DalImage.cs" />
     <Compile Include="DTO\DalImageCategory.cs" />
     <Compile Include="DTO\DalImageProperties.cs" />
     <Compile Include="DTO\DalPrize.cs" />
+    <Compile Include="DTO\DalPrizeType.cs" />
     <Compile Include="DTO\DalStock.cs" />
+    <Compile Include="DTO\DalStockImage.cs" />
+    <Compile Include="DTO\DalStockPrize.cs" />
+    <Compile Include="DTO\DalStockProgress.cs" />
+    <Compile Include="DTO\DalStockType.cs" />
+    <Compile Include="DTO\DalUser.cs" />
+    <Compile Include="DTO\DalUserStock.cs" />
     <Compile Include="Interface\IEntity.cs" />
     <Compile Include="Interface\IRepository.cs" />
     <Compile Include="Interface\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EPAM_Project_FileRepository\CustomExpressionVisitor\CustomExpressionVisitor.csproj">
+    <ProjectReference Include="..\CustomExpressionVisitor\CustomExpressionVisitor.csproj">
       <Project>{7ab8094c-2191-463f-9c8f-33c031fc4c58}</Project>
       <Name>CustomExpressionVisitor</Name>
     </ProjectReference>
@@ -74,6 +113,10 @@
       <Project>{36c16da0-0d1c-4beb-a1fb-1b38a7b9df66}</Project>
       <Name>ORM</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
