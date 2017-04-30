@@ -21,7 +21,7 @@ namespace DAL.DalToOrmMappers
                 id_stock_progress = stProg.Id,
                 id_stock_and_Image = stProg.Id_StockImage,
                 id_user = stProg.Id_User,
-                is_scanned = stProg.IsScanndes
+                is_scanned = stProg.IsScannded
             };
         }
 
@@ -36,7 +36,7 @@ namespace DAL.DalToOrmMappers
                 Id = stProg.id_stock_progress,
                 Id_StockImage = stProg.id_stock_and_Image,
                 Id_User = stProg.id_user,
-                IsScanndes = stProg.is_scanned
+                IsScannded = stProg.is_scanned
             };
         }
     }

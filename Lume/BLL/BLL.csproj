@@ -40,13 +40,57 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BllToDalMappers\AvatarMapper.cs" />
+    <Compile Include="BllToDalMappers\CityMapper.cs" />
+    <Compile Include="BllToDalMappers\CountryMapper.cs" />
+    <Compile Include="BllToDalMappers\DataTypeMapper.cs" />
+    <Compile Include="BllToDalMappers\EventMapper.cs" />
+    <Compile Include="BllToDalMappers\HistoryMapper.cs" />
+    <Compile Include="BllToDalMappers\ImageCategoryMapper.cs" />
+    <Compile Include="BllToDalMappers\ImageMapper.cs" />
+    <Compile Include="BllToDalMappers\ImagePropertiesMapper.cs" />
+    <Compile Include="BllToDalMappers\PrizeMapper.cs" />
+    <Compile Include="BllToDalMappers\PrizeTypeMapper.cs" />
+    <Compile Include="BllToDalMappers\StockImageMapper.cs" />
+    <Compile Include="BllToDalMappers\StockMapper.cs" />
+    <Compile Include="BllToDalMappers\StockPrizeMapper.cs" />
+    <Compile Include="BllToDalMappers\StockProgressMapper.cs" />
+    <Compile Include="BllToDalMappers\StockTypeMapper.cs" />
+    <Compile Include="BllToDalMappers\UserMapper.cs" />
+    <Compile Include="BllToDalMappers\UserStockMapper.cs" />
+    <Compile Include="Entities\BllAvatar.cs" />
+    <Compile Include="Entities\BllCity.cs" />
+    <Compile Include="Entities\BllCountry.cs" />
+    <Compile Include="Entities\BllDataType.cs" />
+    <Compile Include="Entities\BllEvent.cs" />
+    <Compile Include="Entities\BllHistory.cs" />
+    <Compile Include="Entities\BllImage.cs" />
+    <Compile Include="Entities\BllImageCategory.cs" />
+    <Compile Include="Entities\BllImageProperties.cs" />
+    <Compile Include="Entities\BllPrize.cs" />
+    <Compile Include="Entities\BllPrizeType.cs" />
+    <Compile Include="Entities\BllStock.cs" />
+    <Compile Include="Entities\BllStockImage.cs" />
+    <Compile Include="Entities\BllStockPrize.cs" />
+    <Compile Include="Entities\BllStockProgress.cs" />
+    <Compile Include="Entities\BllStockType.cs" />
+    <Compile Include="Entities\BllUser.cs" />
+    <Compile Include="Entities\BllUserStock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BllToDalMappers\" />
-    <Folder Include="Entities\" />
     <Folder Include="Services Interface\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomExpressionVisitor\CustomExpressionVisitor.csproj">
+      <Project>{7ab8094c-2191-463f-9c8f-33c031fc4c58}</Project>
+      <Name>CustomExpressionVisitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{a1041a13-b004-4653-bf92-2b3171340fe6}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

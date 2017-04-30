@@ -1,25 +1,24 @@
 ﻿using CustomExpressionVisitor;
-using DAL.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.DTO
+namespace BLL.Entities
 {
-    public class DalStockProgress : IEntity
+    public class BllStockProgress
     {
-        [CustomAttributeMapper("id_stock_progress")]
+        [CustomAttributeMapper("Id")]
         public long Id { get; set; }
 
-        [CustomAttributeMapper("id_user")]
+        [CustomAttributeMapper("Id_User")]
         public long Id_User { get; set; }
 
-        [CustomAttributeMapper("id_stock_and_Image")]
+        [CustomAttributeMapper("Id_StockImage")]
         public long Id_StockImage { get; set; }
 
-        [CustomAttributeMapper("is_scanned")]
+        [CustomAttributeMapper("IsScanndes")]
         public bool IsScannded { get; set; }
     }
 }
