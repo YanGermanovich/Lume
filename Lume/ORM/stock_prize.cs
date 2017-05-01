@@ -14,7 +14,7 @@ namespace ORM
     
     public partial class stock_prize
     {
-        public int id_stock_prize { get; set; }
+        public long id_stock_prize { get; set; }
         public long Stock_id_stock { get; set; }
         public long id_prize { get; set; }
     

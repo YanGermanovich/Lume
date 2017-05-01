@@ -110,7 +110,7 @@
           <Key>
             <PropertyRef Name="id_stock_prize" />
           </Key>
-          <Property Name="id_stock_prize" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_stock_prize" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Stock_id_stock" Type="uint" Nullable="false" />
           <Property Name="id_prize" Type="uint" Nullable="false" />
         </EntityType>
@@ -660,7 +660,7 @@
           <Key>
             <PropertyRef Name="id_stock_prize" />
           </Key>
-          <Property Name="id_stock_prize" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_stock_prize" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Stock_id_stock" Type="Int64" Nullable="false" />
           <Property Name="id_prize" Type="Int64" Nullable="false" />
           <NavigationProperty Name="prize" Relationship="Self.stock_prize_ibfk_1" FromRole="stock_prize" ToRole="prize" />
