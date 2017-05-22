@@ -29,10 +29,10 @@ namespace CustomDependencyResolver
             }
             else
             {
-                kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InSingletonScope();
                 kernel.Bind<DbContext>().To<lume_LumeEntities>().InSingletonScope();
             }
 
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InSingletonScope();
             kernel.Bind<ILogger>().ToMethod(f => LogManager.GetCurrentClassLogger()).InSingletonScope();
 
             kernel.Bind<IService<BllAvatar>>().To<AvatarService>();

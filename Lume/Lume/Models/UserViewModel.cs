@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -24,5 +25,6 @@ namespace Lume.Models
         public long Id_Avatar { get; set; }
         public double? N { get; set; }
         public double? E { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

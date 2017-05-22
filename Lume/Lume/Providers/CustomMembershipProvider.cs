@@ -1,10 +1,12 @@
 ﻿using BLL.Entities;
 using BLL.Services_Interface;
+using Lume.Infrastructure.Helper;
 using Lume.Infrastructure.Mappers;
 using Lume.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -35,10 +37,11 @@ namespace Lume.Providers
 
         public override bool ValidateUser(string email, string password)
         {
-            var user = UserRepository.GetFirstByPredicate(u => u.Email == email);
+            Expression<Func<BllUser, bool>> f = ValueCompileVisitor.Convert<BllUser>(u => u.Email == email);
+            var user = UserRepository.GetFirstByPredicate(f);
 
 
-            if (user != null && Crypto.VerifyHashedPassword(user.Password, password))
+            if (user != null && String.Equals(user.Password, password))
             {
                 return true;
             }

@@ -12,7 +12,7 @@ namespace ORM
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class lume_LumeEntities : DbContext
     {
         public lume_LumeEntities()

@@ -1,0 +1,35 @@
+﻿@model Lume.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+<div class="container-fluid" ng-show="!loading">
+    <p ng-if="success" class="alert alert-success">{{success}}</p>
+    <p ng-if="error" class="alert alert-danger">{{error}}</p>
+    <form name="registerForm">
+        <div class="form-group" ng-class="{'has-error':!registerForm.user_email.$valid}">
+            <label for="user_email">Email address:</label>
+            <input type="email" class="form-control" name="user_email" id="user_email" required="" ng-model="registerData.email">
+            <span class="help-block" ng-show="registerForm.user_email.$error.required">Email is required.</span>
+            <span class="help-block" ng-show="registerForm.user_email.$error.email">Email is invalid.</span>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':!registerForm.password.$valid}">
+            <label for="password">Password</label>
+            <input class="form-control" type="password" name="password" required="" ng-model="registerData.password" />
+            <span class="help-block" ng-show="registerForm.password.$error.required">Password is required.</span>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':!registerForm.passwordCompare.$valid}">
+            <label for="passwordCompare">Confirm Password</label>
+            <input class="form-control" type="password" name="passwordCompare" ng-model="registerData.PasswordCompare" ng-match="registerData.password" />
+            <span class="help-block" ng-show="registerForm.passwordCompare.$error.match">Passwords do not match.</span>
+        </div>
+    </form>
+    <button class="btn btn-success" ng-disabled="!registerForm.$valid" ng-click="register()">Register</button>
+</div>
+<div ng-if="loading">
+    <img src="../../img/loading.gif" />
+</div>
