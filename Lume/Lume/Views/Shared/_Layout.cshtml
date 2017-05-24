@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/angular")
 
     
@@ -28,12 +29,19 @@
                 <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
 
                     <ul class="nav navbar-nav navbar-left">
-                        <li>Hello, </li>
+                        <li><a>Hello, @User.Identity.Name</a></li>
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li ng-if="isLogin()"><a href>Welcom {{userName()}}</a></li>
-                        <li ng-if="isLogin()"><a href ng-click="Logout()">Log off</a></li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li><a href ng-click="Logout()">Log off</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("Login", "Account")">Log in</a></li>
+                            <li><a href="@Url.Action("Register", "Account")">Register</a></li>
+                        }
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
