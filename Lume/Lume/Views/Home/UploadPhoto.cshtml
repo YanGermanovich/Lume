@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "UploadPhoto";
+}
+
+<div class="panel" ng-controller="UploadPhotoController">
+    <div ng-show="!loading">
+        <div>
+            <div class="form-group">
+                <input class="form-control" id="tmp_src" type="text" placeholder="Введите описание" ng-model="TempName">
+            </div>
+            <div class="form-group">
+                <input id="uploadFile" type="file" name="file" ng-file-select="onFileSelect($files)" />
+            </div>
+            
+        </div>
+        <div class="panel">
+            <div class="panel-heading">Предпросмотр</div>
+            <div class="panel-body">
+
+                <div class="panel panel-primary image_preview_panel">
+                    <img class="image_preview" ng-src={{TempSrc}} />
+                </div>
+                <div class="panel panel-info desc_preview_panel">
+                    {{TempName}}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <input id="add_btn" class="btn btn-success" type="button" value="Upload Image" ng-click="AddImage()">
+        </div>
+    </div>
+    <div ng-if="loading">
+        <img src="../../Content/loading.gif" />
+    </div>
+</div>

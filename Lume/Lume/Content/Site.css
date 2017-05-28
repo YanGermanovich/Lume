@@ -1,3 +1,22 @@
 ﻿.city_country_select {
     padding: 3px;
 }
+
+.right-panel {
+    border: 1px solid black;
+}
+@media (min-width: 992px) {
+    .left-panel {
+        max-width: 240px;
+    }
+}
+
+.desc_preview_panel {
+    padding:5px;
+}
+.image_preview_panel {
+    text-align: center;
+}
+.image_preview {
+    max-height: 500px;
+}

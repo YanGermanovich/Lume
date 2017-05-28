@@ -1,4 +1,54 @@
-﻿angular.module('LumeAngular', ['ui.bootstrap'])
+﻿var fileReader = function ($q, $log) {
+
+    var onLoad = function (reader, deferred, scope) {
+        return function () {
+            scope.$apply(function () {
+                deferred.resolve(reader.result);
+            });
+        };
+    };
+
+    var onError = function (reader, deferred, scope) {
+        return function () {
+            scope.$apply(function () {
+                deferred.reject(reader.result);
+            });
+        };
+    };
+
+    var onProgress = function (reader, scope) {
+        return function (event) {
+            scope.$broadcast("fileProgress",
+                {
+                    total: event.total,
+                    loaded: event.loaded
+                });
+        };
+    };
+
+    var getReader = function (deferred, scope) {
+        var reader = new FileReader();
+        reader.onload = onLoad(reader, deferred, scope);
+        reader.onerror = onError(reader, deferred, scope);
+        reader.onprogress = onProgress(reader, scope);
+        return reader;
+    };
+
+    var readAsDataURL = function (file, scope) {
+        var deferred = $q.defer();
+
+        var reader = getReader(deferred, scope);
+        reader.readAsDataURL(file);
+
+        return deferred.promise;
+    };
+
+    return {
+        readAsDataUrl: readAsDataURL
+    };
+};
+
+angular.module('LumeAngular', ['ui.bootstrap'])
     .controller('LoginController', ["$scope", '$http', "$timeout", function ($scope, $http, $timeout) {
         $scope.loginData = {};
         $scope.login = function () {
@@ -93,7 +143,42 @@
             $scope.loading = false;
         });
     }])
+    .controller('UploadPhotoController', ["$scope", '$http', "$timeout", 'fileReader', function ($scope, $http, $timeout, fileReader) {
+        $scope.uploadFile = function (files) {
+            if (files[0].type.indexOf('image') != -1)
+                $scope.file = files[0];
+            else
+                document.getElementById("uploadFile").value = null;
+        };
 
+        $scope.getFile = function () {
+            fileReader.readAsDataUrl($scope.file, $scope)
+                .then(function (result) {
+                    $scope.TempSrc = result;
+                });
+
+            $scope.$on("fileProgress", function (e, progress) {
+                $scope.progress = progress.loaded / progress.total;
+            });
+            $scope.AddImage = function () {
+                fd = new FormData();
+                $scope.loading = true;
+                fd.append('file', $scope.file);
+                fd.append('description', $scope.TempName);
+                    $http({
+                        url: "UploadPhoto",
+                        method: 'POST',
+                        data: fd,
+                        headers: { 'Content-Type': undefined },
+                        transformRequest: angular.identity
+                    })
+                    .then(function () {
+                        $scope.loading = false;
+                    })
+                $scope.TempName = "";
+            }
+        }
+    }])
     .directive("ngMatch", ['$parse', function ($parse) {
 
         var directive = {
@@ -125,3 +210,21 @@
 
         }
     }])
+    .directive("ngFileSelect", function () {
+
+        return {
+            link: function ($scope, el) {
+
+                el.bind("change", function (e) {
+
+                    $scope.file = (e.srcElement || e.target).files[0];
+                    $scope.getFile();
+                })
+
+            }
+
+        }
+
+
+    })
+    .factory("fileReader", ["$q", "$log", fileReader])
