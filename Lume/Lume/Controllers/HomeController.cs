@@ -62,5 +62,15 @@ namespace Lume.Controllers
             return View();
         }
 
+
+        public ActionResult AllImages()
+        {
+            return View();
+        }
+
+        public ActionResult GetAllImages()
+        {
+            return Json(_imageService.GetAllEntities(), JsonRequestBehavior.AllowGet);
+        }
     }
 }

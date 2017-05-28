@@ -7,8 +7,8 @@
     @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/angular")
-
-
+    @Scripts.Render("~/bundles/jquery")
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAjO-NDOjxW4bfbkkMNNf9ddfDrsx6Vt4g"></script>
 </head>
 <body ng-app="LumeAngular">
     <div class="container-fluid content" ng-controller="MutualController">
@@ -44,23 +44,31 @@
 
 
         <div class="row">
-            <div class="col-md-3 ">
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action">Фотографии</a>
-                    <a href="@Url.Action("UploadPhoto","Home")" class="list-group-item list-group-item-action">Добавить фотографию</a>
-                    <a href="#" class="list-group-item list-group-item-action">Акции</a>
-                    <a href="#" class="list-group-item list-group-item-action">Добавить акцию</a>
+            @if (Request.IsAuthenticated)
+            {
+                <div class="col-md-3 ">
+                    <div class="list-group">
+                        <a href="@Url.Action("AllImages","Home")" class="list-group-item list-group-item-action">Фотографии</a>
+                        <a href="@Url.Action("UploadPhoto","Home")" class="list-group-item list-group-item-action">Добавить фотографию</a>
+                        <a href="#" class="list-group-item list-group-item-action">Акции</a>
+                        <a href="#" class="list-group-item list-group-item-action">Добавить акцию</a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-md-push-6 ">right panel</div>
-            <div class="col-md-6 col-md-pull-3">
-                @RenderBody()
-            </div>
+                <div class="col-md-3 col-md-push-6 ">right panel</div>
+                <div class="col-md-6 col-md-pull-3">
+                    @RenderBody()
+                </div>
+            }
+            else
+            {
+                <div>
+                    @RenderBody()
+                </div>
+            }
+
         </div>
-    </div>
-    @*@Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/modernizr")
-        @Scripts.Render("~/bundles/jqueryval")*@
-    @RenderSection("scripts", required: false)
+           @* @Scripts.Render("~/bundles/modernizr")
+            @Scripts.Render("~/bundles/jqueryval")*@
+        @RenderSection("scripts", required: false)
 </body>
 </html>

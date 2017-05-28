@@ -115,20 +115,18 @@ angular.module('LumeAngular', ['ui.bootstrap'])
         $scope.countries = {};
         $scope.SelectedCity = {};
         $scope.SelectedCoutry = {};
-        $scope.coutrySelect = function ()
-        {
+        $scope.coutrySelect = function () {
             $scope.cities = {};
             $scope.SelectedCity = false;
             for (i = 0; i < $scope.allCities.length; i++) {
                 if ($scope.allCities[i].idCountry == $scope.SelectedCoutry.Id) {
                     $scope.cities[i] = $scope.allCities[i];
-                    if (!$scope.SelectedCity)
-                    {
+                    if (!$scope.SelectedCity) {
                         $scope.SelectedCity = $scope.cities[i];
                     }
                 }
             }
-             
+
 
         }
         $http({
@@ -156,28 +154,50 @@ angular.module('LumeAngular', ['ui.bootstrap'])
                 .then(function (result) {
                     $scope.TempSrc = result;
                 });
-
-            $scope.$on("fileProgress", function (e, progress) {
-                $scope.progress = progress.loaded / progress.total;
-            });
-            $scope.AddImage = function () {
-                fd = new FormData();
-                $scope.loading = true;
-                fd.append('file', $scope.file);
-                fd.append('description', $scope.TempName);
-                    $http({
-                        url: "UploadPhoto",
-                        method: 'POST',
-                        data: fd,
-                        headers: { 'Content-Type': undefined },
-                        transformRequest: angular.identity
-                    })
-                    .then(function () {
-                        $scope.loading = false;
-                    })
-                $scope.TempName = "";
-            }
         }
+        $scope.$on("fileProgress", function (e, progress) {
+            $scope.progress = progress.loaded / progress.total;
+        });
+        $scope.AddImage = function () {
+            var lat = marker.getPosition().lat();
+            var lng = marker.getPosition().lng();
+            fd = new FormData();
+            $scope.loading = true;
+            fd.append('file', $scope.file);
+            fd.append('description', $scope.TempName);
+            fd.append("N", lat)
+            fd.append("E", lng)
+            $http({
+                url: "UploadPhoto",
+                method: 'POST',
+                data: fd,
+                headers: { 'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+                .then(function () {
+                    $scope.loading = false;
+                })
+            $scope.TempName = "";
+        }
+        $scope.validImage = false;
+        $scope.onFileSelect = function ($event) {
+            var ext = $event.target.files[0].name.match(/\.(.+)$/)[1];
+            $scope.validImage = angular.lowercase(ext) === 'jpg';
+        }
+    }])
+    .controller('ViewAllController', ["$scope", '$http', "$timeout", function ($scope, $http, $timeout) {
+        $scope.allImages = {};
+        $http({
+            method: 'GET',
+            url: 'GetAllImages',
+        }).then(function(data)
+        {
+            $scope.allImages = data.data;
+            })
+        $scope.modalShown = false;
+        $scope.toggleModal = function () {
+            $scope.modalShown = !$scope.modalShown;
+        };
     }])
     .directive("ngMatch", ['$parse', function ($parse) {
 
@@ -228,3 +248,18 @@ angular.module('LumeAngular', ['ui.bootstrap'])
 
     })
     .factory("fileReader", ["$q", "$log", fileReader])
+    .directive("ngUploadChange", function () {
+        return {
+            scope: {
+                ngUploadChange: "&"
+            },
+            link: function ($scope, $element, $attrs) {
+                $element.on("change", function (event) {
+                    $scope.ngUploadChange({ $event: event })
+                })
+                $scope.$on("$destroy", function () {
+                    $element.off();
+                });
+            }
+        }
+    })

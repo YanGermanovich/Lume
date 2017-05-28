@@ -1,18 +1,24 @@
 ﻿@{
-    ViewBag.Title = "UploadPhoto";
+    ViewBag.Title = "Загрузка фото";
 }
-
+<script src="/Scripts/myScripts/googleMap.js"></script>
 <div class="panel" ng-controller="UploadPhotoController">
     <div ng-show="!loading">
-        <div>
-            <div class="form-group">
-                <input class="form-control" id="tmp_src" type="text" placeholder="Введите описание" ng-model="TempName">
+        <form name="uploadForm" class="row">
+            <div class="col-lg-5">
+                <div class="form-group" ng-class="{'has-error':!uploadForm.desc.$valid}">
+                    <input class="form-control" id="tmp_src" name="desc" type="text" required="" placeholder="Введите описание" ng-model="TempName">
+                    <span class="help-block" ng-show="uploadForm.desc.$error.required">Поле обзяательно для заполнения</span>
+                </div>
+                <div class="form-group" ng-class="{'has-error':!validImage}">
+                    <input id="uploadFile" class="form-control" type="file" name="file" ng-file-select="uploadFile($files)" ng-upload-change="onFileSelect($event)" />
+                    <span class="help-block" ng-show="!validImage">Неверный формат картинки (только jpg)</span>
+                </div>
             </div>
-            <div class="form-group">
-                <input id="uploadFile" type="file" name="file" ng-file-select="onFileSelect($files)" />
+            <div class="col-lg-7">
+                <div class="infoDiv" id="map_canvas"></div>
             </div>
-            
-        </div>
+        </form>
         <div class="panel">
             <div class="panel-heading">Предпросмотр</div>
             <div class="panel-body">
@@ -27,7 +33,7 @@
         </div>
         
         <div class="form-group">
-            <input id="add_btn" class="btn btn-success" type="button" value="Upload Image" ng-click="AddImage()">
+            <input id="add_btn" class="btn btn-success" type="button" value="Upload Image" ng-disabled="!uploadForm.$valid || !validImage" ng-click="AddImage()">
         </div>
     </div>
     <div ng-if="loading">
