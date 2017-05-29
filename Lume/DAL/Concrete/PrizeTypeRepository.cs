@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<type_of_prize>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalPrizeType GetById(int key)
+        public DalPrizeType GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<country>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalCountry GetById(int key)
+        public DalCountry GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

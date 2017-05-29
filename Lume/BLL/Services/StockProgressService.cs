@@ -30,7 +30,7 @@ namespace DAL.Concrete
             return _repository.GetAll().Select(e => e.ToBll());
         }
 
-        public BllStockProgress GetEntitieById(int key)
+        public BllStockProgress GetEntitieById(long? key)
         {
             var response = _repository.GetById(key);
             return response == null ? null : response.ToBll();

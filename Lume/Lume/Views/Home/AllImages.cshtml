@@ -2,30 +2,55 @@
     ViewBag.Title = "Фотографии";
 }
 <div ng-controller="ViewAllController">
-    <div class="images">
-        <div class="view_image panel panel-danger" data-target="#myModal"  ng-repeat="image in allImages">
+    <div class="images" ng-if="!loading">
+        <div><input type="checkbox" ng-click="onlyMineChange()" /> Только мои</div>
+        <div class="view_image panel panel-danger" ng-click="toggleModal(image.Id)" ng-repeat="image in allImages | filter : imageFilter">
             <div class="image_src panel panel-info"><img class="image_src_img"  ng-src="http://lume.datacenter.by/{{image.Src}}"></div>
             <div class="image_desc_panel panel panel-success">{{image.description}}</div>
         </div>
     </div>
-    <button id="myBtn">Open Modal</button>
-    <!-- The Modal -->
-    <div id="myModal" class="my-modal">
+    <div ng-if="loading">
+        <img src="../../Content/loading.gif" />
+    </div>
+    <modal-dialog show='modalShown'>
+        <div class="image_view">
+            <div class="image_view_div row">
+                <div class="image_view_img_div col-md-6">
+                    <img class="image_view_img" ng-src="http://lume.datacenter.by/{{selecteImage.Src}}" />
+                </div>
+                <div class="image_view_map col-md-6">
+                    <div class="infoDiv" id="map_canvas"></div>
+                </div>
+            </div>
+            <div class="image_view_text panel panel-info">
+                <div class="image_view_text_author panel panel-success">
+                    <div class="panel-heading">Автор фото</div>
+                    <div class="panel-body">
+                        <p>{{selecteImage.Author_Name}}</p>
+                        <p ng-if="selecteImage.isMy">{{selecteImage.ScanningCount}}</p>
+                    </div>
+                </div>
+                <div class="image_view_text_description panel panel-primary">
+                    <div class="panel-heading">Описание</div>
+                    <div class="panel-body" >
+                        <span ng-show="!isEdit">{{selecteImage.description}}</span>
+                        <textarea ng-show="isEdit" ng-model="selecteImage.description"></textarea>
+                    </div>
+                    
+                </div>
 
-        <!-- Modal content -->
-        <div class="my-modal-content">
-            <div class="my-modal-header">
-                <span class="close">&times;</span>
-                <h2>Modal Header</h2>
             </div>
-            <div class="my-modal-body">
-                <p>Some text in the Modal Body</p>
-                <p>Some other text...</p>
-            </div>
-            <div class="my-modal-footer">
-                <h3>Modal Footer</h3>
+            <div class="image_view_btn">
+                <div class="image_view_btn_edit_save btn btn-warning" ng-click="editClick()" ng-if="selecteImage.isMy" >
+                    {{Edit_State}}
+                </div>
+                <div class="image_view_btn_edit_save btn btn-danger" ng-click="deleteImage(selecteImage.Id)" ng-if="selecteImage.isMy">
+                    Удалить
+                </div>
+                <div class="image_view_btn_close btn btn-primary" ng-click="hideModal()">
+                    Закрыть
+                </div>
             </div>
         </div>
-
-    </div>
+    </modal-dialog>
 </div>

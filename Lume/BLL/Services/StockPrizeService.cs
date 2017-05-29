@@ -27,7 +27,7 @@ namespace DAL.Concrete
             return _repository.GetAll().Select(e => e.ToBll());
         }
 
-        public BllStockPrize GetEntitieById(int key)
+        public BllStockPrize GetEntitieById(long? key)
         {
             var response = _repository.GetById(key);
             return response == null ? null : response.ToBll();

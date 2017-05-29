@@ -20,7 +20,7 @@ namespace Lume
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/angular.js",
-                        //"~/Scripts/angular-route.js",
+                        "~/Scripts/angular-cookies.js",
                         "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
                         "~/Scripts/myScripts/LumeAngular.js"));
 

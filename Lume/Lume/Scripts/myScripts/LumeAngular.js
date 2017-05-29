@@ -47,9 +47,55 @@
         readAsDataUrl: readAsDataURL
     };
 };
+function Initialize(N,E) {
 
-angular.module('LumeAngular', ['ui.bootstrap'])
-    .controller('LoginController', ["$scope", '$http', "$timeout", function ($scope, $http, $timeout) {
+    var myLatlng = new google.maps.LatLng(N, E);
+
+    var mapOptions = {
+        zoom: 15,
+        center: myLatlng
+    }
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+    // Place a draggable marker on the map
+    marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+    });
+}
+angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
+    .controller('MutualController', ["$scope", '$http', "$cookies", function ($scope, $http, $cookies) {
+        $scope.UserName = "";
+        if ($cookies.get('userName') == null) {
+            $scope.loading = true;
+            $http.get("../Account/GetName")
+                .then(function (response) {
+                    if (response.data.IsAuthenticated) {
+                        $cookies.put('userName', response.data.UserName);
+                        $scope.UserName = response.data.UserName;
+                    }
+                    $scope.loading = false;
+                });
+        }
+        else {
+            $scope.UserName = $cookies.get('userName');
+        }
+        $scope.Logout = function () {
+            $http.get("Account/LogOut")
+                .then(function (response) {
+                    window.location = response.data.Url
+                });
+        }
+
+    }])
+    .controller('PopularController', ["$scope", '$http', function ($scope, $http) {
+        $scope.popularImages = {};
+        $http.get("../Home/GetPopular")
+            .then(function (response) {
+                $scope.popularImages = response.data;
+            });
+    }])
+    .controller('LoginController', ["$scope", '$http', "$timeout", "$cookies", function ($scope, $http, $timeout, $cookies) {
         $scope.loginData = {};
         $scope.login = function () {
             $scope.loading = true;
@@ -66,6 +112,7 @@ angular.module('LumeAngular', ['ui.bootstrap'])
                 }
                 else {
                     $scope.success = response.data.success;
+                    $cookies.put('userName', response.data.UserName)
                     $timeout(function () {
                         $scope.success = false;
                         window.location = response.data.Url
@@ -73,14 +120,6 @@ angular.module('LumeAngular', ['ui.bootstrap'])
                 }
                 $scope.loading = false;
             });
-        }
-    }])
-    .controller('MutualController', ["$scope", '$http', function ($scope, $http) {
-        $scope.Logout = function () {
-            $http.get("Account/LogOut")
-                .then(function (response) {
-                    window.location = response.data.Url
-                });
         }
     }])
     .controller('RegisterController', ["$scope", '$http', "$timeout", function ($scope, $http, $timeout) {
@@ -168,7 +207,7 @@ angular.module('LumeAngular', ['ui.bootstrap'])
             fd.append("N", lat)
             fd.append("E", lng)
             $http({
-                url: "UploadPhoto",
+                url: "Home/UploadPhoto",
                 method: 'POST',
                 data: fd,
                 headers: { 'Content-Type': undefined },
@@ -186,18 +225,71 @@ angular.module('LumeAngular', ['ui.bootstrap'])
         }
     }])
     .controller('ViewAllController', ["$scope", '$http', "$timeout", function ($scope, $http, $timeout) {
+        $scope.loading = true;
         $scope.allImages = {};
         $http({
             method: 'GET',
-            url: 'GetAllImages',
-        }).then(function(data)
-        {
+            url: 'Home/GetAllImages',
+        }).then(function (data) {
             $scope.allImages = data.data;
+            $scope.loading = false;
+        });
+        $scope.deleteImage = function ($id) {
+            $http({
+                method: 'GET',
+                url: 'Home/DeletePhoto?id=' + $id,
+            }).then(function (data) {
+                angular.forEach($scope.allImages, function (value, key) {
+                    if (value.Id == $id) {
+                        $scope.allImages.splice(key, 1);
+                    }
+                });
+                $scope.modalShown = false;
             })
+        }
+        $scope.onlyMine = false;
+        $scope.imageFilter = function ($image) {
+            if (!$image.IsConfirmed) {
+                return false;
+            }
+            if ($scope.onlyMine) {
+                return $image.isMy;
+            }
+            return true;
+        }
+        $scope.onlyMineChange = function () {
+            $scope.onlyMine = !$scope.onlyMine;
+        }
+        $scope.selecteImage = "";
         $scope.modalShown = false;
-        $scope.toggleModal = function () {
+        $scope.toggleModal = function ($id) {
+            angular.forEach($scope.allImages, function (value, key) {
+                if (value.Id == $id) {
+                    $scope.selecteImage = value;
+                }
+            });
+            Initialize($scope.selecteImage.N, $scope.selecteImage.E);
             $scope.modalShown = !$scope.modalShown;
         };
+        $scope.hideModal = function () {
+            $scope.modalShown = !$scope.modalShown;
+        }
+        $scope.Edit_State = "Редакировать";
+        $scope.isEdit = false;
+        $scope.editClick = function () {
+            if ($scope.Edit_State == "Редакировать") {
+                $scope.isEdit = true;
+                $scope.Edit_State = "Сохранить";
+            }
+            else {
+                $scope.isEdit = false;
+                $scope.Edit_State = "Редакировать"
+                $http({
+                    method: 'GET',
+                    url: 'Home/UpdateImage?id=' + $scope.selecteImage.Id + "&desc=" + $scope.selecteImage.description,
+                });
+            }
+        }
     }])
     .directive("ngMatch", ['$parse', function ($parse) {
 
@@ -247,7 +339,6 @@ angular.module('LumeAngular', ['ui.bootstrap'])
 
 
     })
-    .factory("fileReader", ["$q", "$log", fileReader])
     .directive("ngUploadChange", function () {
         return {
             scope: {
@@ -263,3 +354,26 @@ angular.module('LumeAngular', ['ui.bootstrap'])
             }
         }
     })
+    .directive('modalDialog', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                show: '='
+            },
+            replace: true, // Replace with the template below
+            transclude: true, // we want to insert custom content inside the directive
+            link: function (scope, element, attrs) {
+                scope.dialogStyle = {};
+                if (attrs.width)
+                    scope.dialogStyle.width = attrs.width;
+                if (attrs.height)
+                    scope.dialogStyle.height = attrs.height;
+                scope.hideModal = function () {
+                    scope.show = false;
+                };
+            },
+            template: "<div class='ng-modal' ng-show='show'><div class='ng-modal-overlay' ng-click='hideModal()'></div><div class='ng-modal-dialog' ng-style='dialogStyle'><div class='ng-modal-close' ng-click='hideModal()'>X</div><div class='ng-modal-dialog-content' ng-transclude></div></div></div>"
+        };
+    })
+    .factory("fileReader", ["$q", "$log", fileReader])
+  

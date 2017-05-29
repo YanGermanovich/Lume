@@ -54,13 +54,28 @@ namespace Lume.Controllers
         {
             if (Membership.ValidateUser(user.Email, user.Password))
             {
-                FormsAuthentication.SetAuthCookie(_userService.GetFirstByPredicate(u => u.Email == user.Email).UserName, user.RememberMe);
-                return Json(new { success = "Logged in successfully", Url = Url.Action("Index", "Home") }, JsonRequestBehavior.AllowGet);
+                FormsAuthentication.SetAuthCookie(user.Email, user.RememberMe);
+                return Json(new { success = "Logged in successfully", UserName = _userService.GetFirstByPredicate(u=>u.Email==user.Email).UserName, Url = Url.Action("AllImages", "Home") }, JsonRequestBehavior.AllowGet);
 
             }
             else
             {
                 return Json(new { error = "Incorrect login or password" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult GetName()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Json(new { IsAuthenticated = true, UserName = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name).UserName }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new
+                {
+                    IsAuthenticated = false
+                },JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -85,7 +100,7 @@ namespace Lume.Controllers
             if (membershipUser != null)
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, false);
-                return Json(new { success = "Register in successfully", Url = Url.Action("Index", "Home") }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = "Register in successfully", Url = Url.Action("AllImages", "Home") }, JsonRequestBehavior.AllowGet);
             }
             else
             {

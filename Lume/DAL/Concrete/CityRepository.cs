@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<city>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalCity GetById(int key)
+        public DalCity GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

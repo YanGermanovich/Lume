@@ -27,7 +27,7 @@ namespace DAL.Concrete
             return _repository.GetAll().Select(e => e.ToBll());
         }
 
-        public BllEvent GetEntitieById(int key)
+        public BllEvent GetEntitieById(long? key)
         {
             var response = _repository.GetById(key);
             return response == null ? null : response.ToBll();

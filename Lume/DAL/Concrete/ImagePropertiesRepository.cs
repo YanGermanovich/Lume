@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<properties_images>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalImageProperties GetById(int key)
+        public DalImageProperties GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

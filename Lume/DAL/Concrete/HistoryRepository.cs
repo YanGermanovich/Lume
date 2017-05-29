@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<history>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalHistory GetById(int key)
+        public DalHistory GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

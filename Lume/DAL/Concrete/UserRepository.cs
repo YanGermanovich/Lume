@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<user>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalUser GetById(int key)
+        public DalUser GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

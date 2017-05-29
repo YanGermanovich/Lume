@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<stock_type>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalStockType GetById(int key)
+        public DalStockType GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

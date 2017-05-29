@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<@event>().Where(criteria.Compile()).ToList().Select(entity => entity.ToDal());
         }
 
-        public DalEvent GetById(int key)
+        public DalEvent GetById(long? key)
         {
             return GetFirstByPredicate(entity => entity.Id == key);
         }

@@ -10,6 +10,9 @@ namespace Lume.Models
         public long Id { get; set; }
         public long? Id_Properies { get; set; }
         public long? Id_Author { get; set; }
+        public string Author_Name { get; set; }
+        public long ScanningCount { get; set; }
+        public bool isMy { get; set; }
         public long? Id_ImageCategory { get; set; }
         public long? Id_Event { get; set; }
         public DateTime? PublicationDate { get; set; }

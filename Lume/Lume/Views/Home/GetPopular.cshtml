@@ -1,0 +1,5 @@
+﻿<span>Самые сканируемые за неделю:</span>
+<div class="popular_image panel panel-danger" ng-repeat="image in popularImages">
+    <div class="popular_image_src panel panel-info"><img class="popular_image_src_img" ng-src="http://lume.datacenter.by/{{image.Src}}"></div>
+    <div class="popular_image_desc_panel panel panel-success">{{image.description}}</div>
+</div>

@@ -45,7 +45,7 @@ namespace DAL.Concrete
             return _context.Set<avatar>().Where(criteria.Compile()).ToList().Select(role => role.ToDal());
         }
 
-        public DalAvatar GetById(int key)
+        public DalAvatar GetById(long? key)
         {
             return GetFirstByPredicate(role => role.Id == key);
         }

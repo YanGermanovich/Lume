@@ -11,7 +11,7 @@ namespace BLL.Services_Interface
     {
         TEntity GetFirstByPredicate(Expression<Func<TEntity, bool>> f);
         IEnumerable<TEntity> GetAllByPredicate(Expression<Func<TEntity, bool>> f);
-        TEntity GetEntitieById(int key);
+        TEntity GetEntitieById(long? key);
         IEnumerable<TEntity> GetAllEntities();
         void Create(TEntity e);
         void Delete(TEntity e);
