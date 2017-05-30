@@ -8,6 +8,7 @@ using DAL.Concrete;
 using BLL.Entities;
 using BLL.Services_Interface;
 using DAL.DTO;
+using Bll.Services;
 
 namespace CustomDependencyResolver
 {

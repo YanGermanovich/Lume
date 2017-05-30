@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Lume.Controllers
 {
@@ -202,6 +203,32 @@ namespace Lume.Controllers
             }
             _userStockService.Create(new BllUserStock() { Id_Stock = id, Id_User = myId, Progress = false });
             return null;
+        }
+
+        public ActionResult EditProfile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditProfile(UserViewModel user, string NewPassword)
+        {
+            if(Membership.ValidateUser(user.Email, user.Password))
+            {
+                user.Password = NewPassword ?? user.Password;
+                _userService.Update(user.ToBll());
+                return Json(new { success = "Информация обновлена", Url = Url.Action("AllImages", "Home") }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Error="Неправильный логин или пароль" },JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult GetUser()
+        {
+            var myId = _userService.GetFirstByPredicate(ValueCompileVisitor.Convert<BllUser>(u => u.Email == User.Identity.Name)).Id;
+            return Json(_userService.GetEntitieById(myId).ToUi(), JsonRequestBehavior.AllowGet);
         }
     }
 }

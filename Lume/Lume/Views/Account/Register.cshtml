@@ -41,7 +41,6 @@
             <label for="passwordCompare">Confirm Password</label>
             <input class="form-control" type="password" name="passwordCompare" ng-model="registerData.PasswordCompare" ng-match="registerData.Password" />
             <span class="help-block" ng-show="registerForm.passwordCompare.$error.match">Passwords do not match.</span>
-            {{registerData.Password}}
         </div>
     </form>
     <button class="btn btn-success" ng-disabled="!registerForm.$valid" ng-click="register()">Register</button>

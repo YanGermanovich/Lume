@@ -52,6 +52,7 @@
                         <a href="@Url.Action("UploadPhoto","Home")" class="list-group-item list-group-item-action">Добавить фотографию</a>
                         <a href="@Url.Action("Actions","Home")" class="list-group-item list-group-item-action">Акции</a>
                         <a ng-show="isCompany" href="@Url.Action("NewAction","Home")" class="list-group-item list-group-item-action">Добавить акцию</a>
+                        <a href="@Url.Action("EditProfile","Home")" class="list-group-item list-group-item-action">Настройка профиля</a>
                     </div>
                 </div>
                 <div class="col-md-3 col-md-push-6 popular_panel" ng-controller="PopularController">@Html.Partial("GetPopular")</div>

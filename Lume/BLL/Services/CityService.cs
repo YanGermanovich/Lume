@@ -1,4 +1,4 @@
-﻿using BLL.BllToBllMappers;
+﻿using BLL.BllToDalMappers;
 using BLL.Entities;
 using BLL.Services_Interface;
 using CustomExpressionVisitor;
@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Concrete
+namespace Bll.Services
 {
     public class CityService : IService<BllCity>
     {

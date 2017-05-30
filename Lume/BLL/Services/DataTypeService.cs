@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using BLL.Entities;
 using BLL.Services_Interface;
 
-namespace DAL.Concrete
+namespace Bll.Services
 {
     public class DataTypeService :IService<BllDataType>
     {

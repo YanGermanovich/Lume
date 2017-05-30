@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DAL.Concrete
+namespace Bll.Services
 {
     public class CountryService :IService<BllCountry>
     {

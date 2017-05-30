@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.BllToBllMappers
+namespace BLL.BllToDalMappers
 {
     public static class CityMapper
     {

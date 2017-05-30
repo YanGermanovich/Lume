@@ -9,7 +9,7 @@ using CustomExpressionVisitor;
 using BLL.Entities;
 using BLL.Services_Interface;
 
-namespace DAL.Concrete
+namespace Bll.Services
 {
     public class AvatarService : IService<BllAvatar>
     {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using BLL.Entities;
 using BLL.Services_Interface;
 
-namespace DAL.Concrete
+namespace Bll.Services
 {
     public class StockProgressService :IService<BllStockProgress>
     {

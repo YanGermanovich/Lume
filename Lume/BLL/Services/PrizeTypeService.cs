@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using BLL.Services_Interface;
 using BLL.Entities;
 
-namespace DAL.Concrete
+namespace Bll.Services
 {
     public class PrizeTypeService : IService<BllPrizeType>
     {

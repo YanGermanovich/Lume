@@ -1044,6 +1044,7 @@
     <Content Include="Views\Home\GetPopular.cshtml" />
     <Content Include="Views\Home\Actions.cshtml" />
     <Content Include="Views\Home\NewAction.cshtml" />
+    <Content Include="Views\Home\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

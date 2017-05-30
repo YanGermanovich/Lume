@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using BLL.Services_Interface;
 using BLL.Entities;
 
-namespace DAL.Concrete
+namespace Bll.Services
 {
     public class UserService :IService<BllUser>
     {

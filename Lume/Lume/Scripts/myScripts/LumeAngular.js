@@ -349,8 +349,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                 });
             }
         }
-        $scope.TakePart = function ($id)
-        {
+        $scope.TakePart = function ($id) {
             $http({
                 method: 'GET',
                 url: '../Home/TakePart?id=' + $id,
@@ -358,15 +357,12 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         }
         $scope.UsersModalShown = false;
         $scope.rowCollection = [];
-        $scope.searchTextChange = function ($searchText)
-        {
+        $scope.searchTextChange = function ($searchText) {
             $scope.searchText = $searchText;
         }
         $scope.searchText = "";
-        $scope.MyTableFilter = function ($item)
-        {
-            if ($item.Email.indexOf($scope.searchText) == -1)
-            {
+        $scope.MyTableFilter = function ($item) {
+            if ($item.Email.indexOf($scope.searchText) == -1) {
                 return false;
             }
             for (var i = 0; i < $scope.rowCollection.length; i++) {
@@ -390,8 +386,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         $scope.pageUserDec = function () {
             $scope.currentUserPage--;
         }
-        $scope.pageInc = function ()
-        {
+        $scope.pageInc = function () {
             $scope.currentPage++;
         }
         $scope.pageDec = function () {
@@ -415,29 +410,24 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         $http({
             method: 'GET',
             url: '../Home/GetAllMyImages'
-        }).then(function (response)
-        {
-            for (i = 0; i < response.data.length; i++)
-            {
-                $scope.ImageForSelect.push({ Src : response.data[i].Src, Id : response.data[i].Id, Checked : false });
+        }).then(function (response) {
+            for (i = 0; i < response.data.length; i++) {
+                $scope.ImageForSelect.push({ Src: response.data[i].Src, Id: response.data[i].Id, Checked: false });
             }
-            })
+        })
         $http({
             method: 'GET',
             url: '../Home/GetAllTypes'
         }).then(function (response) {
             for (i = 0; i < response.data.length; i++) {
-                $scope.TypeForSelect.push({ Name: response.data[i].Name, Id: response.data[i].Id});
+                $scope.TypeForSelect.push({ Name: response.data[i].Name, Id: response.data[i].Id });
             }
         })
-        $scope.AddStock = function ()
-        {
+        $scope.AddStock = function () {
             $scope.stockToUpload.Image = [];
-            for (i = 0; i < $scope.ImageForSelect.length; i++)
-            {
-                if ($scope.ImageForSelect[i].Checked)
-                {
-                    $scope.stockToUpload.Image.push({ Id: $scope.ImageForSelect[i].Id})
+            for (i = 0; i < $scope.ImageForSelect.length; i++) {
+                if ($scope.ImageForSelect[i].Checked) {
+                    $scope.stockToUpload.Image.push({ Id: $scope.ImageForSelect[i].Id })
                 }
             }
             if ($scope.stockToUpload.stockType == "")
@@ -546,7 +536,88 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         }
         //DatePicker
     }])
-    
+    .controller('ProfileController', ["$scope", '$http', '$timeout', '$cookies', function ($scope, $http, $timeout, $cookies) {
+       
+        $scope.allCities = {};
+        $scope.cities = {};
+        $scope.countries = {};
+        $scope.SelectedCity = {};
+        $scope.SelectedCoutry = {};
+        $scope.coutrySelect = function () {
+            $scope.cities = {};
+            $scope.SelectedCity = false;
+            for (i = 0; i < $scope.allCities.length; i++) {
+                if ($scope.allCities[i].idCountry == $scope.SelectedCoutry.Id) {
+                    $scope.cities[i] = $scope.allCities[i];
+                    if (!$scope.SelectedCity) {
+                        $scope.SelectedCity = $scope.cities[i];
+                    }
+                }
+            }
+
+
+        }
+        $scope.loading = true;
+        $http({
+            method: 'GET',
+            url: '../Account/GetCities',
+        }).then(function (response) {
+            $scope.allCities = response.data.cities;
+            $scope.countries = response.data.countries;
+            $scope.cities = $scope.allCities;
+            $http({
+                method: 'GET',
+                url: '../Home/GetUser'
+            }).then(function (response) {
+                $scope.profileData = response.data;
+                var countryId = {};
+                var selecCity = {};
+                for (i = 0; i < $scope.allCities.length; i++) {
+                    if ($scope.allCities[i].Id == $scope.profileData.Id_City)
+                    {
+                        countryId = $scope.allCities[i].idCountry;
+                        selecCity = $scope.allCities[i];
+                        break;
+                    }
+                }
+                for (i = 0; i < $scope.countries.length; i++) {
+                    if ($scope.countries[i].Id == countryId) {
+                        $scope.SelectedCoutry = $scope.countries[i];
+                        $scope.coutrySelect();
+                        $scope.SelectedCity = selecCity;
+                        break;
+                    }
+                }
+                $scope.loading = false;
+                })
+            });
+        $scope.profileEdit = function ()
+        {
+            $scope.loading = true;
+            $scope.profileData['Id_City'] = $scope.SelectedCity.Id;
+            $http({
+                method: 'POST',
+                url: '../Home/EditProfile',
+                data: $scope.profileData,
+            }).then(function (response) {
+                if (response.data.Error) {
+                    $scope.error = response.data.Error;
+                    $timeout(function () {
+                        $scope.error = false;
+                    }, 4000);
+                }
+                else {
+                    $scope.success = response.data.Success;
+                    $timeout(function () {
+                        $cookies.remove('userName');
+                        $scope.success = false;
+                        window.location = response.data.Url
+                    }, 1000);
+                }
+                $scope.loading = false;
+            })
+        }
+    }])
     .directive("ngMatch", ['$parse', function ($parse) {
 
         var directive = {
