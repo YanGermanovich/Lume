@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href=@Url.Action("AllImages", "Home")>Привет, {{UserName}}</a>
+                <a class="navbar-brand" href=@Url.Action("AllImages", "Home")><span ng-show="!!UserName">Привет, {{UserName}}</span><span ng-show="!UserName">Lume</span></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -50,8 +50,8 @@
                     <div class="list-group">
                         <a href="@Url.Action("AllImages","Home")" class="list-group-item list-group-item-action">Фотографии</a>
                         <a href="@Url.Action("UploadPhoto","Home")" class="list-group-item list-group-item-action">Добавить фотографию</a>
-                        <a href="#" class="list-group-item list-group-item-action">Акции</a>
-                        <a href="#" class="list-group-item list-group-item-action">Добавить акцию</a>
+                        <a href="@Url.Action("Actions","Home")" class="list-group-item list-group-item-action">Акции</a>
+                        <a ng-show="isCompany" href="@Url.Action("NewAction","Home")" class="list-group-item list-group-item-action">Добавить акцию</a>
                     </div>
                 </div>
                 <div class="col-md-3 col-md-push-6 popular_panel" ng-controller="PopularController">@Html.Partial("GetPopular")</div>

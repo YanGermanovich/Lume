@@ -68,7 +68,8 @@ namespace Lume.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return Json(new { IsAuthenticated = true, UserName = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name).UserName }, JsonRequestBehavior.AllowGet);
+                var user = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name);
+                return Json(new { IsAuthenticated = true, isCompany = user.Type == "Company", UserName = user.UserName }, JsonRequestBehavior.AllowGet);
             }
             else
             {

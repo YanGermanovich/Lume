@@ -1,5 +1,6 @@
 ﻿using BLL.Entities;
 using BLL.Services_Interface;
+using Lume.Infrastructure.Helper;
 using Lume.Infrastructure.Mappers;
 using Lume.Models;
 using System;
@@ -19,12 +20,31 @@ namespace Lume.Controllers
         IService<BllUser> _userService;
         IService<BllImage> _imageService;
         IService<BllHistory> _historyService;
+        IService<BllStock> _stockService;
+        IService<BllStockImage> _stockImageService;
+        IService<BllStockPrize> _stockPrizeService;
+        IService<BllStockProgress> _stockProgressService;
+        IService<BllUserStock> _userStockService;
+        IService<BllStockType> _stockTypeService;
+        IService<BllAvatar> _avatarsService;
+        IService<BllPrize> _prizeService;
 
-        public HomeController(IService<BllUser> userService, IService<BllImage> imageService, IService<BllHistory> historyService)
+        public HomeController(IService<BllUser> userService, IService<BllImage> imageService, IService<BllHistory> historyService, 
+                             IService<BllStock> stockService, IService<BllStockImage> stockImageService, IService<BllStockProgress> stockProgressService,
+                             IService<BllUserStock> userStockService, IService<BllStockType> stockType, IService<BllAvatar> avatarsService,
+                             IService<BllPrize> prizeService, IService<BllStockPrize> stockPrizeService)
         {
             _userService = userService;
             _imageService = imageService;
             _historyService = historyService;
+            _stockService = stockService;
+            _stockImageService = stockImageService;
+            _stockProgressService = stockProgressService;
+            _userStockService = userStockService;
+            _stockTypeService = stockType;
+            _avatarsService = avatarsService;
+            _prizeService = prizeService;
+            _stockPrizeService = stockPrizeService;
         }
         public ActionResult Index()
         {
@@ -110,6 +130,78 @@ namespace Lume.Controllers
                                                              .Take(3)
                                                              .Select(i => _imageService.GetEntitieById(i.Value).ToMvc(_userService,_historyService, User.Identity.Name));
             return Json(topPopular, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Actions()
+        {
+            return View();
+        }
+
+        public ActionResult GetAllStocks()
+        {
+            long myId = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name).Id;
+            var st = _stockService.GetAllEntities().ToList().Select(s => s.ToMvc(_userService, _imageService, _stockImageService, 
+                                                                                 _stockTypeService, _historyService,_avatarsService,
+                                                                                 _userStockService, _stockProgressService, 
+                                                                                 _stockPrizeService,_prizeService, User.Identity.Name)).ToList();
+            return Json(st, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdateStock(long id, string desc, string name)
+        {
+            var stock = _stockService.GetEntitieById(id);
+            stock.Description= desc;
+            stock.Name = name;
+            _stockService.Update(stock);
+            return null;
+        }
+
+        public ActionResult NewAction()
+        {
+            return View();
+        }
+
+        public ActionResult UploadAction(StockViewModel stock)
+        {
+            if (stock.stockType!=null)
+            {
+                _stockTypeService.Create(new BllStockType() { Name = stock.stockType });
+                stock.id_stockType = _stockTypeService.GetFirstByPredicate(ValueCompileVisitor.Convert<BllStockType>(sT => sT.Name == stock.stockType)).Id;
+            }
+            var myId = _userService.GetFirstByPredicate(ValueCompileVisitor.Convert<BllUser>(u => u.Email == User.Identity.Name)).Id;
+            stock.id_author = myId;
+            _stockService.Create(stock.ToBll());
+            var stock_id = _stockService.GetFirstByPredicate(s => s.Name == stock.Name && s.BeginingDate == stock.BeginData).Id;
+            foreach (var imgage in stock.Image)
+            {
+                _stockImageService.Create(new BllStockImage() { Id_Image = imgage.Id, Id_Stock = stock_id });
+            }
+            return null;
+
+        }
+
+        public ActionResult GetAllTypes()
+        {
+            return Json(_stockTypeService.GetAllEntities().Select(sT => new { Name = sT.Name, Id = sT.Id }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllMyImages()
+        {
+            var myId = _userService.GetFirstByPredicate(ValueCompileVisitor.Convert<BllUser>(u => u.Email == User.Identity.Name)).Id;
+            return Json(_imageService.GetAllByPredicate(ValueCompileVisitor.Convert<BllImage>(im => im.Id_Author == myId)).Select(im => new { Src = im.Src, Id = im.Id }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult TakePart(long id)
+        {
+            long myId = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name).Id;
+            var stock = _stockService.GetEntitieById(id);
+            var allImages = _stockImageService.GetAllByPredicate(sI => sI.Id_Stock == id);
+            foreach(var im in allImages)
+            {
+                _stockProgressService.Create(new BllStockProgress() { Id_StockImage = im.Id, Id_User = myId, IsScannded = false });
+            }
+            _userStockService.Create(new BllUserStock() { Id_Stock = id, Id_User = myId, Progress = false });
+            return null;
         }
     }
 }

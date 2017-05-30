@@ -65,23 +65,34 @@ function Initialize(N,E) {
 }
 angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
     .controller('MutualController', ["$scope", '$http', "$cookies", function ($scope, $http, $cookies) {
-        $scope.UserName = "";
+        $scope.UserName = false;
+        $scope.isCompany = false;
         if ($cookies.get('userName') == null) {
             $scope.loading = true;
             $http.get("../Account/GetName")
                 .then(function (response) {
+                    $cookies.putObject('IsAuthenticated', response.data.IsAuthenticated)
                     if (response.data.IsAuthenticated) {
                         $cookies.put('userName', response.data.UserName);
+                        $cookies.putObject('isCompany', response.data.isCompany)
                         $scope.UserName = response.data.UserName;
                     }
                     $scope.loading = false;
                 });
         }
         else {
-            $scope.UserName = $cookies.get('userName');
+            if ($cookies.getObject('IsAuthenticated')) {
+                $scope.UserName = $cookies.get('userName');
+                $scope.isCompany = $cookies.getObject('isCompany');
+            }
         }
         $scope.Logout = function () {
-            $http.get("Account/LogOut")
+            $cookies.remove('userName');
+            $cookies.remove('isCompany');
+            $cookies.putObject('IsAuthenticated', false)
+            $scope.UserName = false;
+            $scope.isCompany = false;
+            $http.get("../Account/LogOut")
                 .then(function (response) {
                     window.location = response.data.Url
                 });
@@ -113,6 +124,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                 else {
                     $scope.success = response.data.success;
                     $cookies.put('userName', response.data.UserName)
+                    $cookies.put('isCompany', response.data.isCompany)
                     $timeout(function () {
                         $scope.success = false;
                         window.location = response.data.Url
@@ -207,7 +219,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
             fd.append("N", lat)
             fd.append("E", lng)
             $http({
-                url: "Home/UploadPhoto",
+                url: "../Home/UploadPhoto",
                 method: 'POST',
                 data: fd,
                 headers: { 'Content-Type': undefined },
@@ -291,6 +303,250 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
             }
         }
     }])
+    .controller('ViewAllStocksController', ["$scope", '$http', "$timeout", function ($scope, $http, $timeout) {
+        $scope.loading = true;
+        $scope.allStocks = {};
+        $http({
+            method: 'GET',
+            url: '../Home/GetAllStocks',
+        }).then(function (data) {
+            $scope.allStocks = data.data;
+            $scope.loading = false;
+        })
+        $scope.selecteStock = {};
+        $scope.ImagesToView = null;
+        $scope.modalShown = false;
+        $scope.ImagesModalShown = false;
+        $scope.toggleModal = function ($id) {
+            angular.forEach($scope.allStocks, function (value, key) {
+                if (value.Id == $id) {
+                    $scope.selecteStock = value;
+                }
+            });
+            $scope.modalShown = !$scope.modalShown;
+        };
+        $scope.toggleImagesModal = function ($images) {
+            $scope.currentPage = 0;
+            $scope.ImagesToView = $images;
+            $scope.ImagesModalShown = !$scope.ImagesModalShown;
+        }
+        $scope.hideModal = function () {
+            $scope.modalShown = !$scope.modalShown;
+        }
+        $scope.Edit_State = "Редакировать";
+        $scope.isEdit = false;
+        $scope.editClick = function () {
+            if ($scope.Edit_State == "Редакировать") {
+                $scope.isEdit = true;
+                $scope.Edit_State = "Сохранить";
+            }
+            else {
+                $scope.isEdit = false;
+                $scope.Edit_State = "Редакировать"
+                $http({
+                    method: 'GET',
+                    url: '../Home/UpdateStock?id=' + $scope.selecteStock.Id + "&desc=" + $scope.selecteStock.Description + "&name=" + $scope.selecteStock.Name,
+                });
+            }
+        }
+        $scope.TakePart = function ($id)
+        {
+            $http({
+                method: 'GET',
+                url: '../Home/TakePart?id=' + $id,
+            });
+        }
+        $scope.UsersModalShown = false;
+        $scope.rowCollection = [];
+        $scope.searchTextChange = function ($searchText)
+        {
+            $scope.searchText = $searchText;
+        }
+        $scope.searchText = "";
+        $scope.MyTableFilter = function ($item)
+        {
+            if ($item.Email.indexOf($scope.searchText) == -1)
+            {
+                return false;
+            }
+            for (var i = 0; i < $scope.rowCollection.length; i++) {
+                if ($scope.rowCollection[i].Email == $item.Email) {
+                    return i < ($scope.currentPage + 1) * 3;
+                }
+            }
+        }
+        $scope.toggleUsersModal = function () {
+            $scope.rowCollection = [];
+            for (var i = 0; i < $scope.selecteStock.Participants.length; i++) {
+                $scope.rowCollection.push({ Email: $scope.selecteStock.Participants[i].Email, Scanned: $scope.selecteStock.Participants[i].Scanned })
+            }
+            $scope.UsersModalShown = true;
+        }
+        $scope.currentPage = 0;
+        $scope.currentUserPage = 0;
+        $scope.pageUserInc = function () {
+            $scope.currentUserPage++;
+        }
+        $scope.pageUserDec = function () {
+            $scope.currentUserPage--;
+        }
+        $scope.pageInc = function ()
+        {
+            $scope.currentPage++;
+        }
+        $scope.pageDec = function () {
+            $scope.currentPage--;
+        }
+        $scope.ImagesToViewPages = function ($image) {
+            if (!!$scope.ImagesToView) {
+                for (var i = 0; i < $scope.ImagesToView.length; i++) {
+                    if ($scope.ImagesToView[i].Id == $image.Id) {
+                        return i == $scope.currentPage;
+                    }
+                }
+            }
+            return false;
+        }
+    }])
+    .controller('UploadStockController', ["$scope", '$http', function ($scope, $http) {
+        $scope.stockToUpload = {};
+        $scope.ImageForSelect = [];
+        $scope.TypeForSelect = [];
+        $http({
+            method: 'GET',
+            url: '../Home/GetAllMyImages'
+        }).then(function (response)
+        {
+            for (i = 0; i < response.data.length; i++)
+            {
+                $scope.ImageForSelect.push({ Src : response.data[i].Src, Id : response.data[i].Id, Checked : false });
+            }
+            })
+        $http({
+            method: 'GET',
+            url: '../Home/GetAllTypes'
+        }).then(function (response) {
+            for (i = 0; i < response.data.length; i++) {
+                $scope.TypeForSelect.push({ Name: response.data[i].Name, Id: response.data[i].Id});
+            }
+        })
+        $scope.AddStock = function ()
+        {
+            $scope.stockToUpload.Image = [];
+            for (i = 0; i < $scope.ImageForSelect.length; i++)
+            {
+                if ($scope.ImageForSelect[i].Checked)
+                {
+                    $scope.stockToUpload.Image.push({ Id: $scope.ImageForSelect[i].Id})
+                }
+            }
+            if ($scope.stockToUpload.stockType == "")
+                $scope.stockToUpload.stockType = null;
+            $http({
+                method: 'POST',
+                url: '../Home/UploadAction',
+                data: $scope.stockToUpload
+            })
+            console.log($scope.stockToUpload);
+        }
+
+        //DatePicker
+        $scope.today = function () {
+            $scope.dt = new Date();
+        };
+        $scope.today();
+
+        $scope.clear = function () {
+            $scope.dt = null;
+        };
+
+        $scope.inlineOptions = {
+            customClass: getDayClass,
+            minDate: new Date(),
+            showWeeks: true
+        };
+
+        $scope.dateOptions = {
+            dateDisabled: disabled,
+            formatYear: 'yy',
+            maxDate: new Date(2020, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+
+        // Disable weekend selection
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+
+        $scope.toggleMin = function () {
+            $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+            $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+        };
+
+        $scope.toggleMin();
+
+        $scope.open1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        $scope.open2 = function () {
+            $scope.popup2.opened = true;
+        };
+
+        $scope.setDate = function (year, month, day) {
+            $scope.dt = new Date(year, month, day);
+        };
+
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        $scope.format = $scope.formats[0];
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+
+        $scope.popup1 = {
+            opened: false
+        };
+
+        $scope.popup2 = {
+            opened: false
+        };
+
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var afterTomorrow = new Date();
+        afterTomorrow.setDate(tomorrow.getDate() + 1);
+        $scope.events = [
+            {
+                date: tomorrow,
+                status: 'full'
+            },
+            {
+                date: afterTomorrow,
+                status: 'partially'
+            }
+        ];
+
+        function getDayClass(data) {
+            var date = data.date,
+                mode = data.mode;
+            if (mode === 'day') {
+                var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+                for (var i = 0; i < $scope.events.length; i++) {
+                    var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                    if (dayToCheck === currentDay) {
+                        return $scope.events[i].status;
+                    }
+                }
+            }
+
+            return '';
+        }
+        //DatePicker
+    }])
+    
     .directive("ngMatch", ['$parse', function ($parse) {
 
         var directive = {

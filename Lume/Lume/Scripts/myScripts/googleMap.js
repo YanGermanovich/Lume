@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
-    Initialize();
+    Initialize_();
 });
 var marker;
 // Where all the fun happens 
-function Initialize() {
+function Initialize_() {
 
     var myLatlng = new google.maps.LatLng(53.90301904723439, 27.55883505550067);
     var mapOptions = {

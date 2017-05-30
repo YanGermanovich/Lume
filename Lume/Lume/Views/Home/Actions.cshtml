@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Акции";
+}
+
+<div ng-controller="ViewAllStocksController as ctrl">
+    <div ng-if="!loading">
+        <div ng-if="!isCompany"><input type="checkbox" />В которых принимаю участие</div>
+        <div class="view_stock panel panel-danger" ng-click="toggleModal(stock.Id)" ng-repeat="stock in allStocks">
+            <div class="stock_src panel panel-info"><img class="stock_src_img" ng-src="http://lume.datacenter.by/{{stock.AuthorAvatar}}"></div>
+            <div class="stock_name_panel panel panel-success">{{stock.Name}}</div>
+            <div class="stock_desc_panel panel panel-success">{{stock.Description}}</div>
+        </div>
+    </div>
+    <div ng-if="loading">
+        <img src="../../Content/loading.gif" />
+    </div>
+    <modal-dialog show='modalShown'>
+        <div class="stock_view">
+            <div class="stock_view_div">
+                <div class="stock_view_img_div">
+                    <img class="stock_view_img" ng-src="http://lume.datacenter.by/{{selecteStock.AuthorAvatar}}" />
+                </div>
+            </div>
+            <div class="stock_view_text panel panel-info">
+                <div class="stock_view_text_author panel panel-success">
+                    <div class="panel-heading">Автор акции</div>
+                    <div class="panel-body">
+                        <p>{{selecteStock.AuthorName}}</p>
+                        <p>
+                            Фотографии акции <a ng-hide="selecteStock.Image.length==0" href ng-click="toggleImagesModal(selecteStock.Image)">{{selecteStock.Image.length}}</a> <span ng-show="selecteStock.Image.length==0">0</span>
+                        </p>
+                        <p ng-if="selecteStock.isMine">
+                            Участников акции <a ng-hide="selecteStock.Participants.length==0" href ng-click="toggleUsersModal(selecteStock.Participants)">{{selecteStock.Participants.length}}</a> <span ng-show="selecteStock.Participants.length==0">0</span>
+                        </p>
+                        <p>
+                            Приз : {{selecteStock.prizes[0]}} - <span ng-if="selecteStock.isMine || selecteStock.isCompleted">{{selecteStock.prizes_data[0]}}</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="stock_view_text_name panel panel-info">
+                    <div class="panel-heading">Название</div>
+                    <div class="panel-body">
+                        <span ng-show="!isEdit">{{selecteStock.Name}}</span>
+                        <textarea ng-show="isEdit" ng-model="selecteStock.Name"></textarea>
+                    </div>
+
+                </div>
+                <div class="stock_view_text_description panel panel-primary">
+                    <div class="panel-heading">Описание</div>
+                    <div class="panel-body">
+                        <span ng-show="!isEdit">{{selecteStock.Description}}</span>
+                        <textarea ng-show="isEdit" ng-model="selecteStock.Description"></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="stock_view_btn">
+                <div class="stock_view_btn_attend btn btn-success" ng-click="TakePart(selecteStock.Id)" ng-if="!isCompany&&!selecteStock.isTakeParticapent">Прянять участие</div>
+                <div class="stock_view_btn_edit_save btn btn-warning" ng-click="editClick()" ng-if="selecteStock.isMine">
+                    {{Edit_State}}
+                </div>
+                <div class="stock_view_btn_edit_save btn btn-danger" ng-click="deleteStock(selecteStock.Id)" ng-if="selecteStock.isMine">
+                    Удалить
+                </div>
+                <div class="stock_view_btn_close btn btn-primary" ng-click="hideModal()">
+                    Закрыть
+                </div>
+            </div>
+        </div>
+    </modal-dialog>
+    <div class="images_stock_container">
+        <modal-dialog show='ImagesModalShown'>
+            <div ng-repeat="image in ImagesToView | filter : ImagesToViewPages">
+                <div class=" stock_images_view panel panel-info">
+                    <img src="http://lume.datacenter.by/{{image.Src}}" />
+                </div>
+                <div class="btn btn-danger" ng-if="!image.isScanned">Не отсканировано</div>
+                <div class="btn btn-success" ng-if="image.isScanned">Отсканировано</div>
+            </div>
+            <div style="text-align:center">
+                <input type="button" class="btn btn-primary" ng-disabled="currentPage==0"  ng-click="pageDec()"  value="<"/>
+                <div type="button" class="btn btn-primary" ng-disabled="true">{{currentPage+1}} из {{selecteStock.Image.length}} </div>
+                <input type="button" class="btn btn-primary" ng-disabled="currentPage==selecteStock.Image.length-1" ng-click="pageInc()"  value=">"/>
+            </div>
+        </modal-dialog>
+    </div>
+    <div class="users_stock_container">
+        <modal-dialog show='UsersModalShown'>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="Email">Email</th>
+                        <th st-sort="Scanned">Прогресс</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            <input  placeholder="Поиск" class="input-sm form-control" ng-model="searchText" ng-change="searchTextChange(searchText)" type="search" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in rowCollection | filter : MyTableFilter">
+                        <td>{{row.Email}}</td>
+                        <td>{{row.Scanned}}/{{selecteStock.Image.length}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <input type="button" class="btn btn-primary" ng-disabled="currentUserPage==0" ng-click="pageUserDec()" value="<" />
+                            <div class="btn btn-primary" ng-disabled="true">{{currentUserPage+1}} из {{rowCollection.length}} </div>
+                            <input type="button" class="btn btn-primary" ng-disabled="currentUserPage==rowCollection.length-1" ng-click="pageUserInc()" value=">" />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </modal-dialog>
+    </div>
+</div>
+ 

@@ -22,6 +22,8 @@ namespace Lume
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-cookies.js",
                         "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
+                        "~/Scripts/angular-animate.js",
+                          "~/Scripts/angular-sanitize.js",
                         "~/Scripts/myScripts/LumeAngular.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/googleMap").Include(

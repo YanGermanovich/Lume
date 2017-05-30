@@ -156,9 +156,15 @@
     </Compile>
     <Compile Include="Infrastructure\Helper\ValueCompileVisitor.cs" />
     <Compile Include="Infrastructure\Mappers\ImageMapper.cs" />
+    <Compile Include="Infrastructure\Mappers\StockImageMapper.cs" />
+    <Compile Include="Infrastructure\Mappers\StockMapper.cs" />
+    <Compile Include="Infrastructure\Mappers\StockUserMapper.cs" />
     <Compile Include="Infrastructure\Mappers\UserMapper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
+    <Compile Include="Models\StockImageViewModel.cs" />
+    <Compile Include="Models\StockUser.cs" />
+    <Compile Include="Models\StockViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CustomMembershipProvider.cs" />
@@ -1017,6 +1023,7 @@
     <Content Include="Scripts\myScripts\LumeAngular.js" />
     <Content Include="Scripts\myScripts\my-modal.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Content\pagination.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1035,6 +1042,8 @@
     <Content Include="Views\Home\UploadPhoto.cshtml" />
     <Content Include="Views\Home\AllImages.cshtml" />
     <Content Include="Views\Home\GetPopular.cshtml" />
+    <Content Include="Views\Home\Actions.cshtml" />
+    <Content Include="Views\Home\NewAction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

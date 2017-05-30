@@ -30,12 +30,25 @@ namespace Lume.Infrastructure.Helper
             var memberLeft = node.Left as MemberExpression;
             if (memberLeft != null && memberLeft.Expression is ParameterExpression)
             {
-
                 var f = Expression.Lambda(node.Right).Compile();
                 var value = f.DynamicInvoke().ToString();
-                return base.VisitBinary(node.Update(node.Left, node.Conversion, Expression.Constant(value)));
+                if (long.TryParse(value, out long result))
+                {
+                    ;
+                    return base.VisitBinary(node.Update(node.Left, node.Conversion, Expression.Constant(result, node.Left.Type)));
+                }
+                else
+                {
+                    if (bool.TryParse(value, out bool result_bool))
+                    {
+                        return base.VisitBinary(node.Update(node.Left, node.Conversion, Expression.Constant(result_bool, typeof(bool))));
+                    }
+                    else
+                    {
+                        return base.VisitBinary(node.Update(node.Left, node.Conversion, Expression.Constant(value)));
+                    }
+                }
             }
-
             return base.VisitBinary(node);
         }
     }

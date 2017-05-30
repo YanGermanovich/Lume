@@ -18,7 +18,7 @@ namespace BLL.Entities
         [CustomAttributeMapper("Id_StockImage")]
         public long Id_StockImage { get; set; }
 
-        [CustomAttributeMapper("IsScanndes")]
+        [CustomAttributeMapper("IsScannded")]
         public bool IsScannded { get; set; }
     }
 }

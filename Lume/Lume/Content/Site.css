@@ -1,6 +1,7 @@
-﻿html{
-    min-width:360px;
+﻿html {
+    min-width: 360px;
 }
+
 .city_country_select {
     padding: 3px;
 }
@@ -8,14 +9,15 @@
 .right-panel {
     border: 1px solid black;
 }
+
 @media (min-width: 992px) {
     .left-panel {
         max-width: 240px;
     }
 }
 
-.popular_panel span{
-    font-size:24px;
+.popular_panel span {
+    font-size: 24px;
 }
 
 .popular_image {
@@ -24,26 +26,28 @@
     padding: 15px;
 }
 
-.popular_image_src{
-    height:200px;
-    text-align:center;
+.popular_image_src {
+    height: 200px;
+    text-align: center;
 }
 
 .popular_image_src_img {
     max-height: 100%;
-    max-width:100%;
+    max-width: 100%;
 }
 
 .desc_preview_panel {
     padding: 5px;
 }
+
 .image_preview_panel {
     text-align: center;
 }
+
 .image_preview {
-    max-height:300px;
-    height:auto;
-    max-width:100%;
+    max-height: 300px;
+    height: auto;
+    max-width: 100%;
 }
 
 .infoDiv {
@@ -56,10 +60,10 @@
 .view_image {
     display: inline-block;
     margin: 20px 30px 10px 0;
-    padding:15px;
-    width:200px;
-    height:250px;
-    overflow:hidden
+    padding: 15px;
+    width: 200px;
+    height: 250px;
+    overflow: hidden
 }
 
 .images {
@@ -68,13 +72,13 @@
 
 .image_src {
     height: 150px;
-    width:auto;
-    text-align:center;
+    width: auto;
+    text-align: center;
 }
 
-.image_src_img{
-    max-width:100%;
-    max-height:100%;
+.image_src_img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .image_desc_panel {
@@ -148,7 +152,7 @@
 .ng-modal-dialog-content {
     padding: 10px;
     text-align: left;
-    margin:10px;
+    margin: 10px;
 }
 
 .ng-modal-close {
@@ -163,21 +167,22 @@
 }
 
 .image_view {
-    width:100%;
+    width: 100%;
 }
+
 .image_view_img {
-    position:relative;
+    position: relative;
     max-width: 100%;
     max-height: 100%;
 }
 
-.image_view_text{
-    margin-top:15px;
-    padding:10px;
+.image_view_text {
+    margin-top: 15px;
+    padding: 10px;
 }
 
 .image_view_text_description {
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 .image_view_btn > div {
@@ -185,13 +190,15 @@
 }
 
 .image_view_map {
-    margin:15px 0 15px 0;
+    margin: 15px 0 15px 0;
     height: 400px;
 }
+
 .image_view_div {
     max-height: 500px;
 }
-.infoDiv {
+
+.image_view_map .infoDiv {
     width: 100%;
     height: 100%;
 }
@@ -200,9 +207,6 @@
     height: 400px;
 }
 
-.popular_img{
-    wid
-}
 
 @media (max-width: 992px) {
     .image_view_map {
@@ -212,4 +216,107 @@
     .image_view_img_div {
         height: 200px;
     }
+}
+
+textarea {
+    width: 100%;
+}
+
+.view_stock {
+    display: inline-block;
+    margin: 20px 30px 10px 0;
+    padding: 10px;
+    width: 300px;
+    height: 280px;
+    overflow: hidden
+}
+
+    .view_stock > .panel {
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+
+.stock_src {
+    height: 150px;
+    width: auto;
+    text-align: center;
+}
+
+.stock_src_img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.stock_desc_panel {
+    max-height: 60px;
+    overflow: hidden
+}
+
+.stock_view {
+    width: 100%;
+}
+
+.stock_view_img {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.stock_view_text {
+    margin-top: 15px;
+    padding: 10px;
+}
+
+.stock_view_text_description {
+    margin-top: 20px;
+}
+
+.stock_view_btn > div {
+    margin-right: 10px;
+}
+
+.stock_view_map {
+    margin: 15px 0 15px 0;
+    height: 400px;
+}
+
+.stock_view_div {
+    max-height: 500px;
+}
+
+.stock_view_map .infoDiv {
+    width: 100%;
+    height: 100%;
+}
+
+.stock_view_img_div {
+    height: 100%;
+}
+
+.images_stock_container .ng-modal-dialog {
+    width: 60%;
+    top: 50%;
+}
+
+.stock_images_view {
+    padding: 5px;
+    height: 200px;
+    width: auto;
+}
+
+    .stock_images_view img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+.new_stock{
+    width:200px;
+    height:200px;
+    display:inline-block;
+}
+
+.new_stock_img {
+    max-height: 100%;
+    max-width: 100%;
+    display:block;
 }
