@@ -25,5 +25,6 @@ namespace Lume.Models
         public bool isCompleted {get;set;}
         public List<StockUserViewModel> Participants { get; set; }
         public bool isTakeParticapent { get; set; }
+        public List<PrizeViewModel> prizesToUpload { get; set; }
     }
 }

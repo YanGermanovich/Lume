@@ -371,6 +371,14 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                 }
             }
         }
+        $scope.isOnlyMine = false;
+        $scope.onlyMyStocks = function ()
+        {
+            $scope.isOnlyMine = !$scope.isOnlyMine;
+        }
+        $scope.StockFilter = function ($stock) {
+            return $stock.isTakeParticapent || !$scope.isOnlyMine;
+        }
         $scope.toggleUsersModal = function () {
             $scope.rowCollection = [];
             for (var i = 0; i < $scope.selecteStock.Participants.length; i++) {
@@ -404,6 +412,8 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         }
     }])
     .controller('UploadStockController', ["$scope", '$http', function ($scope, $http) {
+        $scope.loading = true;
+        $scope.isNew = false;
         $scope.stockToUpload = {};
         $scope.ImageForSelect = [];
         $scope.TypeForSelect = [];
@@ -422,9 +432,77 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
             for (i = 0; i < response.data.length; i++) {
                 $scope.TypeForSelect.push({ Name: response.data[i].Name, Id: response.data[i].Id });
             }
-        })
+            })
+        $scope.New = function ($b) {
+            $scope.isNew = $b;
+        }
+        $scope.allPrizes = {};
+        $scope.prizes = {};
+        $scope.types = {};
+        $scope.SelectedPrize = {};
+        $scope.SelectedType = {};
+        $scope.allSelectedPrizes = [];
+        $scope.typeSelect = function ($type) {
+            if (!!$type)
+                $scope.SelectedType = $type;
+            $scope.prizes = {};
+            $scope.SelectedPrize = false;
+            for (i = 0; i < $scope.allPrizes.length; i++) {
+                if ($scope.allPrizes[i].Id_PrizeType == $scope.SelectedType.Id) {
+                    $scope.prizes[i] = $scope.allPrizes[i];
+                    if (!$scope.SelectedPrize) {
+                        $scope.SelectedPrize = $scope.prizes[i];
+                    }
+                }
+            }
+        }
+        $scope.deletePrizre = function ($index) {
+            $scope.allSelectedPrizes.splice($index, 1);
+        }
+        $scope.addPrize = function ($newPrize, $newType,$newPrizeData) {
+            var newPrizeEnt = {};
+            if ($scope.isNew) {
+                newPrizeEnt['Id'] = -1;
+                newPrizeEnt['Description'] = $newPrize;
+                if (!!$newType) {
+                    newPrizeEnt['id_PrizeType'] = -1;
+                    newPrizeEnt['PrizeType'] = $newType;
+                }
+                else {
+                    newPrizeEnt['id_PrizeType'] = $scope.SelectedType.Id;
+                }
+            }
+            else {
+                newPrizeEnt['id_PrizeType'] = $scope.SelectedType.Id;
+                newPrizeEnt['Description'] = $scope.SelectedPrize.Description;
+                newPrizeEnt['Id'] = $scope.SelectedPrize.Id;
+            }
+            newPrizeEnt['Data'] = $newPrizeData;   
+            $scope.allSelectedPrizes.push(newPrizeEnt);
+        }
+        $http({
+            method: 'GET',
+            url: '../Home/GetAllPrizes',
+        }).then(function (response) {
+            $scope.allPrizes = response.data.prizes;
+            $scope.types = response.data.types;
+            $scope.prizes = $scope.allPrizes;
+            $scope.SelectedType = $scope.types[0];
+            $scope.typeSelect();
+            $scope.loading = false;
+        });
+
+        $scope.modalShown = false;
+        $scope.toggleModal = function () {
+            $scope.modalShown = !$scope.modalShown;
+        };
+        $scope.hideModal = function () {
+            $scope.modalShown = !$scope.modalShown;
+        }
+
         $scope.AddStock = function () {
             $scope.stockToUpload.Image = [];
+
             for (i = 0; i < $scope.ImageForSelect.length; i++) {
                 if ($scope.ImageForSelect[i].Checked) {
                     $scope.stockToUpload.Image.push({ Id: $scope.ImageForSelect[i].Id })
@@ -432,12 +510,12 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
             }
             if ($scope.stockToUpload.stockType == "")
                 $scope.stockToUpload.stockType = null;
+            $scope.stockToUpload.prizesToUpload = $scope.allSelectedPrizes;
             $http({
                 method: 'POST',
                 url: '../Home/UploadAction',
                 data: $scope.stockToUpload
             })
-            console.log($scope.stockToUpload);
         }
 
         //DatePicker

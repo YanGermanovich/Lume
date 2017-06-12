@@ -4,8 +4,8 @@
 
 <div ng-controller="ViewAllStocksController as ctrl">
     <div ng-if="!loading">
-        <div ng-if="!isCompany"><input type="checkbox" />В которых принимаю участие</div>
-        <div class="view_stock panel panel-danger" ng-click="toggleModal(stock.Id)" ng-repeat="stock in allStocks">
+        <div ng-if="!isCompany"><input type="checkbox" ng-click="onlyMyStocks()" />В которых принимаю участие</div>
+        <div class="view_stock panel panel-danger" ng-click="toggleModal(stock.Id)" ng-repeat="stock in allStocks | filter: StockFilter">
             <div class="stock_src panel panel-info"><img class="stock_src_img" ng-src="http://lume.datacenter.by/{{stock.AuthorAvatar}}"></div>
             <div class="stock_name_panel panel panel-success">{{stock.Name}}</div>
             <div class="stock_desc_panel panel panel-success">{{stock.Description}}</div>
@@ -60,9 +60,6 @@
                 <div class="stock_view_btn_edit_save btn btn-warning" ng-click="editClick()" ng-if="selecteStock.isMine">
                     {{Edit_State}}
                 </div>
-                <div class="stock_view_btn_edit_save btn btn-danger" ng-click="deleteStock(selecteStock.Id)" ng-if="selecteStock.isMine">
-                    Удалить
-                </div>
                 <div class="stock_view_btn_close btn btn-primary" ng-click="hideModal()">
                     Закрыть
                 </div>
@@ -75,8 +72,10 @@
                 <div class=" stock_images_view panel panel-info">
                     <img src="http://lume.datacenter.by/{{image.Src}}" />
                 </div>
-                <div class="btn btn-danger" ng-if="!image.isScanned">Не отсканировано</div>
-                <div class="btn btn-success" ng-if="image.isScanned">Отсканировано</div>
+                <div ng-if="!selecteStock.isMine">
+                    <div class="btn btn-danger" ng-if="!image.isScanned">Не отсканировано</div>
+                    <div class="btn btn-success" ng-if="image.isScanned">Отсканировано</div>
+                </div>
             </div>
             <div style="text-align:center">
                 <input type="button" class="btn btn-primary" ng-disabled="currentPage==0"  ng-click="pageDec()"  value="<"/>

@@ -29,11 +29,12 @@ namespace Lume.Controllers
         IService<BllStockType> _stockTypeService;
         IService<BllAvatar> _avatarsService;
         IService<BllPrize> _prizeService;
+        IService<BllPrizeType> _prizeTypeService;
 
         public HomeController(IService<BllUser> userService, IService<BllImage> imageService, IService<BllHistory> historyService, 
                              IService<BllStock> stockService, IService<BllStockImage> stockImageService, IService<BllStockProgress> stockProgressService,
                              IService<BllUserStock> userStockService, IService<BllStockType> stockType, IService<BllAvatar> avatarsService,
-                             IService<BllPrize> prizeService, IService<BllStockPrize> stockPrizeService)
+                             IService<BllPrize> prizeService, IService<BllStockPrize> stockPrizeService, IService<BllPrizeType> prizeTypeService)
         {
             _userService = userService;
             _imageService = imageService;
@@ -46,6 +47,7 @@ namespace Lume.Controllers
             _avatarsService = avatarsService;
             _prizeService = prizeService;
             _stockPrizeService = stockPrizeService;
+            _prizeTypeService = prizeTypeService;
         }
         public ActionResult Index()
         {
@@ -111,7 +113,14 @@ namespace Lume.Controllers
 
         public ActionResult GetAllImages()
         {
-            return Json(_imageService.GetAllEntities().Select(i => i.ToMvc(_userService, _historyService, User.Identity.Name)), JsonRequestBehavior.AllowGet);
+            var allUsers = _userService.GetAllEntities().ToList();
+            var history = _historyService.GetAllEntities().ToList();
+            long myId = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name).Id;
+            if (allUsers.First(u=>u.Id == myId).Type == "Company")
+            {
+                return Json(_imageService.GetAllEntities().Select(i => i.ToMvc(allUsers, history, User.Identity.Name)), JsonRequestBehavior.AllowGet);
+            }
+            return Json(_imageService.GetAllEntities().Where(im => history.Any(h=> h.Id_Image == im.Id && h.Id_User == myId)).Select(i => i.ToMvc(allUsers, history, User.Identity.Name)), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UpdateImage(long id, string desc)
@@ -129,7 +138,7 @@ namespace Lume.Controllers
                                                              .Select(g => new { Value = g.Key, Count = g.Count() })
                                                              .OrderByDescending(x => x.Count)
                                                              .Take(3)
-                                                             .Select(i => _imageService.GetEntitieById(i.Value).ToMvc(_userService,_historyService, User.Identity.Name));
+                                                             .Select(i => _imageService.GetEntitieById(i.Value).ToMvc(_userService.GetAllEntities().ToList(),_historyService.GetAllEntities().ToList(), User.Identity.Name));
             return Json(topPopular, JsonRequestBehavior.AllowGet);
         }
 
@@ -141,10 +150,10 @@ namespace Lume.Controllers
         public ActionResult GetAllStocks()
         {
             long myId = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name).Id;
-            var st = _stockService.GetAllEntities().ToList().Select(s => s.ToMvc(_userService, _imageService, _stockImageService, 
-                                                                                 _stockTypeService, _historyService,_avatarsService,
-                                                                                 _userStockService, _stockProgressService, 
-                                                                                 _stockPrizeService,_prizeService, User.Identity.Name)).ToList();
+            var st = _stockService.GetAllEntities().ToList().Select(s => s.ToMvc(_userService.GetAllEntities().ToList(), _imageService.GetAllEntities().ToList(), _stockImageService.GetAllEntities().ToList(), 
+                                                                                 _stockTypeService.GetAllEntities().ToList(), _historyService.GetAllEntities().ToList(), _avatarsService.GetAllEntities().ToList(),
+                                                                                 _userStockService.GetAllEntities().ToList(), _stockProgressService.GetAllEntities().ToList(), 
+                                                                                 _stockPrizeService.GetAllEntities().ToList(), _prizeService.GetAllEntities().ToList(), User.Identity.Name)).ToList();
             return Json(st, JsonRequestBehavior.AllowGet);
         }
 
@@ -169,10 +178,34 @@ namespace Lume.Controllers
                 _stockTypeService.Create(new BllStockType() { Name = stock.stockType });
                 stock.id_stockType = _stockTypeService.GetFirstByPredicate(ValueCompileVisitor.Convert<BllStockType>(sT => sT.Name == stock.stockType)).Id;
             }
+            
             var myId = _userService.GetFirstByPredicate(ValueCompileVisitor.Convert<BllUser>(u => u.Email == User.Identity.Name)).Id;
             stock.id_author = myId;
             _stockService.Create(stock.ToBll());
             var stock_id = _stockService.GetFirstByPredicate(s => s.Name == stock.Name && s.BeginingDate == stock.BeginData).Id;
+            foreach (var prize in stock.prizesToUpload)
+            {
+                if (prize.Id != -1)
+                {
+                    _stockPrizeService.Create(new BllStockPrize() { Id_Prize = prize.Id, Id_Stock = stock_id });
+                }
+                else
+                {
+                    if (prize.id_PrizeType != -1)
+                    {
+                        _prizeService.Create(new BllPrize() { Data = prize.Data, Description = prize.Description, Id_PrizeType = prize.id_PrizeType });
+                    }
+                    else
+                    {
+                        _prizeTypeService.Create(new BllPrizeType() { Name = prize.PrizeType });
+                        prize.id_PrizeType = _prizeTypeService.GetAllEntities().Last(pT => pT.Name == prize.PrizeType).Id;
+                        _prizeService.Create(new BllPrize() { Data = prize.Data, Description = prize.Description, Id_PrizeType = prize.id_PrizeType });
+                    }
+                    prize.Id = _prizeService.GetAllEntities().Last(pr => pr.Data == prize.Data & pr.Description == prize.Description & pr.Id_PrizeType == prize.id_PrizeType).Id;
+                    _stockPrizeService.Create(new BllStockPrize() { Id_Prize = prize.Id, Id_Stock = stock_id });
+                }
+
+            }
             foreach (var imgage in stock.Image)
             {
                 _stockImageService.Create(new BllStockImage() { Id_Image = imgage.Id, Id_Stock = stock_id });
@@ -190,6 +223,16 @@ namespace Lume.Controllers
         {
             var myId = _userService.GetFirstByPredicate(ValueCompileVisitor.Convert<BllUser>(u => u.Email == User.Identity.Name)).Id;
             return Json(_imageService.GetAllByPredicate(ValueCompileVisitor.Convert<BllImage>(im => im.Id_Author == myId)).Select(im => new { Src = im.Src, Id = im.Id }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllPrizes()
+        {
+            return Json(new
+            {
+                prizes = _prizeService.GetAllEntities().Select(pr => new { Description = pr.Description, Id = pr.Id, Id_PrizeType = pr.Id_PrizeType }),
+                types = _prizeTypeService.GetAllEntities().Select(pr => new { Name = pr.Name, Id = pr.Id })
+            },
+            JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult TakePart(long id)

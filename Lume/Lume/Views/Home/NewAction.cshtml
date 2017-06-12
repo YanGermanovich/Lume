@@ -4,30 +4,33 @@
 <div class="panel" ng-controller="UploadStockController">
     <div ng-show="!loading">
         <form name="uploadForm">
-                <div class="form-group" ng-class="{'has-error':!uploadForm.name.$valid}">
-                    <input class="form-control"name="name" type="text" required="" placeholder="Введите имя акции" ng-model="stockToUpload.Name">
-                    <span class="help-block" ng-show="uploadForm.desc.$error.required">Поле обзяательно для заполнения</span>
+            <div class="form-group" ng-class="{'has-error':!uploadForm.name.$valid}">
+                <input class="form-control" name="name" type="text" required="" placeholder="Введите имя акции" ng-model="stockToUpload.Name">
+                <span class="help-block" ng-show="uploadForm.desc.$error.required">Поле обзяательно для заполнения</span>
+            </div>
+            <div class="form-group" ng-class="{'has-error':!uploadForm.desc.$valid}">
+                <input class="form-control" name="desc" type="text" required="" placeholder="Введите описание акции" ng-model="stockToUpload.Description">
+                <span class="help-block" ng-show="uploadForm.desc.$error.required">Поле обзяательно для заполнения</span>
+            </div>
+            <div class="form-group">
+                <label for="stockType">Тип акции</label>
+                <select class="form-control stockType_select" name="stockType" ng-options="type.Id as type.Name for type in TypeForSelect" ng-model="stockToUpload.id_stockType"></select>
+            </div>
+            <div class="form-group">
+                <label for="custom_stockType">Или введите новый тип акции</label>
+                <input class="form-control" name="custom_stockType" type="text" placeholder="Название типа акции" ng-model="stockToUpload.stockType">
+            </div>
+            <div class="form-group">
+                <label for="custom_stockType">Или введите новый тип акции</label>
+                <a class="form-control" ng-model="stockToUpload.stockType" ng-click="toggleModal()">Выбрано призов: {{allSelectedPrizes.length}}</a>
+            </div>
+            <label>Выберите фото для акции</label>
+            <div>
+                <div class="new_stock" ng-repeat="image in ImageForSelect">
+                    <img class="new_stock_img" src="http://lume.datacenter.by/{{image.Src}}" />
+                    <input class="new_stock_check" type="checkbox" ng-model="image.Checked" />
                 </div>
-                <div class="form-group" ng-class="{'has-error':!uploadForm.desc.$valid}">
-                    <input class="form-control" name="desc" type="text" required="" placeholder="Введите описание акции" ng-model="stockToUpload.Description">
-                    <span class="help-block" ng-show="uploadForm.desc.$error.required">Поле обзяательно для заполнения</span>
-                </div>
-                <div class="form-group">
-                    <label for="stockType">Тип акции</label>
-                    {{TypeForSelect}}
-                    <select class="form-control stockType_select" name="stockType" ng-options="type.Id as type.Name for type in TypeForSelect" ng-model="stockToUpload.id_stockType"></select>
-                </div>
-                <div class="form-group">
-                    <label for="custom_stockType">Или введите новый тип акции</label>
-                    <input class="form-control"  name="custom_stockType" type="text" placeholder="Название типа акции" ng-model="stockToUpload.stockType">
-                </div>
-                <label>Выберите фото для акции</label>
-                <div>
-                    <div class="new_stock" ng-repeat="image in ImageForSelect">
-                        <img class="new_stock_img" src="http://lume.datacenter.by/{{image.Src}}"/>
-                        <input class="new_stock_check" type="checkbox" ng-model="image.Checked"/>
-                    </div>
-                </div> 
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <label for="BeginData">Выберите дату начала акции</label>
@@ -50,10 +53,66 @@
             </div>
         </form>
         <div class="form-group">
-            <input id="add_btn" class="btn btn-success" type="button" value="Создать акцию" ng-disabled="!uploadForm.$valid" ng-click="AddStock()">
+            <input id="add_btn" class="btn btn-success" type="button" value="Создать акцию" ng-disabled="!uploadForm.$valid || allSelectedPrizes.length == 0" ng-click="AddStock()">
         </div>
     </div>
     <div ng-if="loading">
         <img src="../../Content/loading.gif" />
     </div>
+
+    <modal-dialog show='modalShown'>
+        Добавить приз
+        <uib-tabset active="activeJustified" justified="true">
+            <uib-tab index="0" heading="Выбрать" ng-click="New(false)">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="prizeType">Тип Приза</label>
+                        <select class="form-control" name="prizeType" ng-options="type as type.Name for type in types" ng-model="SelectedType" ng-change="typeSelect(SelectedType)"></select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="prize">Приз</label>
+                        <select class="form-control city_country_select" name="prize" ng-options="prize as prize.Description for prize in prizes" ng-model="SelectedPrize"></select>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab index="1" heading="Новый" ng-click="New(true)">
+
+                <div class="row">
+                    <div class="form-group col-md-6 ">
+                        <label>Тип Приза</label>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select class="form-control" name="prizeType" ng-options="type as type.Name for type in types" ng-model="SelectedType" ng-change="typeSelect(SelectedType)"></select>
+                            </div>
+                            <label class="col-sm-1" style="margin-top: 7px;">
+                                или
+                            </label>
+                            <div class="col-sm-6">
+                                <input class="form-control" placeholder="Новый тип" type="text" name="type" ng-model="$parent.$parent.newType" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="prize">Приз</label>
+                        <input class="form-control" type="text" name="prize" ng-model="$parent.$parent.newPrize" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Введите ссылку на приз" ng-model="$parent.$parent.newPrizeData">
+                </div>
+            </uib-tab>
+        </uib-tabset>
+        
+        
+        <div>
+            <input type="button" class="btn btn-success" value="Добавить" ng-click="addPrize(newPrize, newType,newPrizeData)" ng-disabled="(isNew && (!newPrize || !newPrizeData)) || allSelectedPrizes.length == 1" />
+        </div>
+
+        <div class="allPrizes">
+            <div class="row" ng-repeat="prize in allSelectedPrizes track by $index">
+                <div class="col-xs-10">{{prize.Description}}</div>
+                <div class="col-xs-2" ng-click="deletePrizre($index)"><span class="glyphicon glyphicon-remove"></span></div>
+            </div>
+        </div>
+    </modal-dialog>
 </div>

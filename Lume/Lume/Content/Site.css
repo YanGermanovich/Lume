@@ -320,3 +320,7 @@ textarea {
     max-width: 100%;
     display:block;
 }
+
+.allPrizes > :nth-child(2n+1){
+    background-color:lightgray;
+}
