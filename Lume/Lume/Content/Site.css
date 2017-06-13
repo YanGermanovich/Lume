@@ -83,7 +83,7 @@
 
 .image_desc_panel {
     max-height: 60px;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .ng-modal-overlay {
@@ -321,6 +321,9 @@ textarea {
     display:block;
 }
 
-.allPrizes > :nth-child(2n+1){
-    background-color:lightgray;
+.allPrizes {
+    margin-top:10px;
+}
+.allPrizes > :nth-child(2n+1) {
+    background-color: lightgray;
 }

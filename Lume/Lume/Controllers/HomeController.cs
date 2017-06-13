@@ -120,7 +120,7 @@ namespace Lume.Controllers
             {
                 return Json(_imageService.GetAllEntities().Select(i => i.ToMvc(allUsers, history, User.Identity.Name)), JsonRequestBehavior.AllowGet);
             }
-            return Json(_imageService.GetAllEntities().Where(im => history.Any(h=> h.Id_Image == im.Id && h.Id_User == myId)).Select(i => i.ToMvc(allUsers, history, User.Identity.Name)), JsonRequestBehavior.AllowGet);
+            return Json(_imageService.GetAllEntities().Where(im => history.Any(h=> h.Id_Image == im.Id && h.Id_User == myId) || im.Id_Author == myId).Select(i => i.ToMvc(allUsers, history, User.Identity.Name)), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UpdateImage(long id, string desc)

@@ -47,16 +47,21 @@
         readAsDataUrl: readAsDataURL
     };
 };
-function Initialize(N,E) {
-
+var map;
+function Initialize(N, E) {
     var myLatlng = new google.maps.LatLng(N, E);
-
-    var mapOptions = {
-        zoom: 15,
-        center: myLatlng
+    if (!map){
+        var mapOptions = {
+            zoom: 15,
+            center: myLatlng
+        }
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     }
-    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
+    else
+    {
+        map.setCenter(myLatlng);
+        marker.setMap(null);
+    }
     // Place a draggable marker on the map
     marker = new google.maps.Marker({
         position: myLatlng,

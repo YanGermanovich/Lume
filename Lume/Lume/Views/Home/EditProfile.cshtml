@@ -7,49 +7,48 @@
     <p ng-if="error" class="alert alert-danger">{{error}}</p>
     <form name="profileEditForm">
         <div class="form-group" ng-class="{'has-error':!profileEditForm.user_name.$valid}">
-            <label for="user_name">User name address:</label>
+            <label for="user_name">Имя польщователя:</label>
             <input class="form-control" name="user_name" id="user_name" required="" ng-model="profileData.UserName">
-            <span class="help-block" ng-show="profileEditForm.user_name.$error.required">User name is required.</span>
+            <span class="help-block" ng-show="profileEditForm.user_name.$error.required">Поле обязательно для заполнения.</span>
         </div>
         <div class="form-group" ng-class="{'has-error':!profileEditForm.user_email.$valid}">
-            <label for="user_email">Email address:</label>
+            <label for="user_email">Email:</label>
             <input type="email" class="form-control" name="user_email" id="user_email" required="" ng-model="profileData.Email">
-            <span class="help-block" ng-show="profileEditForm.user_email.$error.required">Email is required.</span>
-            <span class="help-block" ng-show="profileEditForm.user_email.$error.email">Email is invalid.</span>
+            <span class="help-block" ng-show="profileEditForm.user_email.$error.required">Поле обязательно для заполнения.</span>
+            <span class="help-block" ng-show="profileEditForm.user_email.$error.email">Email неправильный.</span>
         </div>
 
         <div class="form-group" ng-class="{'has-error':!profileEditForm.PhoneNumber.$valid}">
-            <label for="PhoneNumber">Phone number</label>
+            <label for="PhoneNumber">Номер телефона:</label>
             <input class="form-control" name="PhoneNumber" ng-model="profileData.PhoneNumber" />
         </div>
         <div class="form-group">
-            <label for="country">Country</label>
+            <label for="country">Страна:</label>
             <select class="form-control city_country_select" name="country" ng-options="country as country.name for country in countries" ng-model="SelectedCoutry" ng-change="coutrySelect()"></select>
         </div>
         <div class="form-group">
-            <label for="city">City</label>
+            <label for="city">Город:</label>
             <select class="form-control city_country_select" name="city" ng-options="city as city.name for city in cities" ng-model="SelectedCity"></select>
         </div>
 
 
         <div class="form-group" ng-class="{'has-error':!profileEditForm.password.$valid}">
-            <label for="password">Password</label>
+            <label for="password">Пароль:</label>
             <input class="form-control" type="password" name="password" required="" ng-model="profileData.Password" />
-            <span class="help-block" ng-show="profileEditForm.password.$error.required">Password is required.</span>
+            <span class="help-block" ng-show="profileEditForm.password.$error.required">Поле обязательно для заполнения.</span>
         </div>
 
         <div class="form-group" ng-class="{'has-error':!profileEditForm.passwordCompare.$valid}">
-            <label for="passwordCompare">Confirm Password</label>
+            <label for="passwordCompare">Подтвердите пароль:</label>
             <input class="form-control" type="password" name="passwordCompare"  required="" ng-model="profileData.PasswordCompare" ng-match="profileData.Password" />
-            <span class="help-block" ng-show="profileEditForm.passwordCompare.$error.match">Passwords do not match.</span>
+            <span class="help-block" ng-show="profileEditForm.passwordCompare.$error.match">Пароли не совпадают.</span>
         </div>
         <div class="form-group" ng-class="{'has-error':!profileEditForm.NewPassword.$valid}">
-            <label for="NewPassword">Новый пароль</label>
+            <label for="NewPassword">Новый пароль:</label>
             <input class="form-control" type="password" name="NewPassword" ng-model="profileData.NewPassword" />
-            <span class="help-block" ng-show="profileEditForm.passwordCompare.$error.match">Passwords do not match.</span>
         </div>
     </form>
-    <button class="btn btn-success" ng-disabled="!profileEditForm.$valid" ng-click="profileEdit()">Register</button>
+    <button class="btn btn-success" ng-disabled="!profileEditForm.$valid" ng-click="profileEdit()">Изменить профиль</button>
 </div>
 <div ng-if="loading">
     <img src="../../Content/loading.gif" />
