@@ -32,14 +32,15 @@ namespace Lume.Infrastructure.Helper
             {
                 var f = Expression.Lambda(node.Right).Compile();
                 var value = f.DynamicInvoke().ToString();
-                if (long.TryParse(value, out long result))
+                long result;
+                if (long.TryParse(value, out result))
                 {
-                    ;
                     return base.VisitBinary(node.Update(node.Left, node.Conversion, Expression.Constant(result, node.Left.Type)));
                 }
                 else
                 {
-                    if (bool.TryParse(value, out bool result_bool))
+                    bool result_bool;
+                    if (bool.TryParse(value, out result_bool))
                     {
                         return base.VisitBinary(node.Update(node.Left, node.Conversion, Expression.Constant(result_bool, typeof(bool))));
                     }
