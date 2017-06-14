@@ -29,8 +29,9 @@ namespace Lume.Infrastructure.Mappers
                 IsConfirmed = image.IsConfirmed
             };
         }
-        public static ImageViewModel ToMvc(this BllImage image, List<BllUser> _userService, List<BllHistory> _historyService, string Email)
+        public static ImageViewModel ToMvc(this BllImage image, List<BllUser> _userService, List<BllHistory> _historyService, List<BllEvent> _eventService, string Email)
         {
+            var even = _eventService.FirstOrDefault(e => e.Id == image.Id_Event);
             return new ImageViewModel()
             {
                 Id = image.Id,
@@ -46,7 +47,8 @@ namespace Lume.Infrastructure.Mappers
                 Src = image.Src,
                 N = image.N,
                 E = image.E,
-                IsConfirmed = image.IsConfirmed
+                IsConfirmed = image.IsConfirmed,
+                Event = new EventViewModel() { Data = even == null? "Нет события" : even.Source}
             };
         }
 

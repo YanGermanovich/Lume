@@ -3,6 +3,7 @@ using BLL.Services_Interface;
 using Lume.Infrastructure.Helper;
 using Lume.Infrastructure.Mappers;
 using Lume.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,11 +31,14 @@ namespace Lume.Controllers
         IService<BllAvatar> _avatarsService;
         IService<BllPrize> _prizeService;
         IService<BllPrizeType> _prizeTypeService;
+        IService<BllEvent> _eventService;
+        IService<BllDataType> _dataTypeService;
 
         public HomeController(IService<BllUser> userService, IService<BllImage> imageService, IService<BllHistory> historyService, 
                              IService<BllStock> stockService, IService<BllStockImage> stockImageService, IService<BllStockProgress> stockProgressService,
                              IService<BllUserStock> userStockService, IService<BllStockType> stockType, IService<BllAvatar> avatarsService,
-                             IService<BllPrize> prizeService, IService<BllStockPrize> stockPrizeService, IService<BllPrizeType> prizeTypeService)
+                             IService<BllPrize> prizeService, IService<BllStockPrize> stockPrizeService, IService<BllPrizeType> prizeTypeService,
+                             IService<BllEvent> eventService, IService<BllDataType> dataTypeService)
         {
             _userService = userService;
             _imageService = imageService;
@@ -48,6 +52,8 @@ namespace Lume.Controllers
             _prizeService = prizeService;
             _stockPrizeService = stockPrizeService;
             _prizeTypeService = prizeTypeService;
+            _eventService = eventService;
+            _dataTypeService = dataTypeService;
         }
         public ActionResult Index()
         {
@@ -63,6 +69,32 @@ namespace Lume.Controllers
         public ActionResult UploadPhoto(ImageViewModel image)
         {
             string tmpKey = Guid.NewGuid().ToString();
+            var ev = JsonConvert.DeserializeObject<EventViewModel>(Request.Form["Event"]);
+            if (ev.Id != -1)
+            {
+                image.Id_Event = ev.Id;
+            }
+            else
+            {
+                if (ev.TypeId != -1)
+                {
+                    _eventService.Create(new BllEvent() { Source = ev.Data, Id_DataType = ev.TypeId });
+                }
+                else
+                {
+                    var dt = _dataTypeService.GetAllEntities().FirstOrDefault(dT => dT.Name == ev.TypeData);
+                    if (dt == null)
+                    {
+                        _dataTypeService.Create(new BllDataType() { Name = ev.TypeData });
+                        ev.TypeId = _dataTypeService.GetAllEntities().Last(dT => dT.Name == ev.TypeData).Id;
+                    }
+                    else
+                    {
+                        ev.TypeId = dt.Id;
+                    }
+                    _eventService.Create(new BllEvent() { Source = ev.Data, Id_DataType = ev.TypeId });
+                }
+            }
             image.E = (double)Convert.ToDecimal(Request.Form["E"].ToString().Replace('.', ','));
             image.N = (double)Convert.ToDecimal(Request.Form["N"].ToString().Replace('.', ','));
             var file = Request.Files[0];
@@ -118,9 +150,9 @@ namespace Lume.Controllers
             long myId = _userService.GetFirstByPredicate(u => u.Email == User.Identity.Name).Id;
             if (allUsers.First(u=>u.Id == myId).Type == "Company")
             {
-                return Json(_imageService.GetAllEntities().Select(i => i.ToMvc(allUsers, history, User.Identity.Name)), JsonRequestBehavior.AllowGet);
+                return Json(_imageService.GetAllEntities().Select(i => i.ToMvc(allUsers, history, _eventService.GetAllEntities().ToList(), User.Identity.Name)), JsonRequestBehavior.AllowGet);
             }
-            return Json(_imageService.GetAllEntities().Where(im => history.Any(h=> h.Id_Image == im.Id && h.Id_User == myId) || im.Id_Author == myId).Select(i => i.ToMvc(allUsers, history, User.Identity.Name)), JsonRequestBehavior.AllowGet);
+            return Json(_imageService.GetAllEntities().Where(im => history.Any(h=> h.Id_Image == im.Id && h.Id_User == myId) || im.Id_Author == myId).Select(i => i.ToMvc(allUsers, history, _eventService.GetAllEntities().ToList(), User.Identity.Name)), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UpdateImage(long id, string desc)
@@ -138,7 +170,7 @@ namespace Lume.Controllers
                                                              .Select(g => new { Value = g.Key, Count = g.Count() })
                                                              .OrderByDescending(x => x.Count)
                                                              .Take(3)
-                                                             .Select(i => _imageService.GetEntitieById(i.Value).ToMvc(_userService.GetAllEntities().ToList(),_historyService.GetAllEntities().ToList(), User.Identity.Name));
+                                                             .Select(i => _imageService.GetEntitieById(i.Value).ToMvc(_userService.GetAllEntities().ToList(),_historyService.GetAllEntities().ToList(), _eventService.GetAllEntities().ToList(), User.Identity.Name));
             return Json(topPopular, JsonRequestBehavior.AllowGet);
         }
 
@@ -233,6 +265,16 @@ namespace Lume.Controllers
                 types = _prizeTypeService.GetAllEntities().Select(pr => new { Name = pr.Name, Id = pr.Id })
             },
             JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllEvents()
+        {
+            return Json(new
+            {
+                events = _eventService.GetAllEntities().Select(ev => new { Data = ev.Source, Id = ev.Id, TypeId = ev.Id_DataType }),
+                types = _dataTypeService.GetAllEntities().Select(dt => new { Data = dt.Name, Id = dt.Id })
+            },
+           JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult TakePart(long id)

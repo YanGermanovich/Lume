@@ -7,7 +7,7 @@
     <p ng-if="error" class="alert alert-danger">{{error}}</p>
     <form name="profileEditForm">
         <div class="form-group" ng-class="{'has-error':!profileEditForm.user_name.$valid}">
-            <label for="user_name">Имя польщователя:</label>
+            <label for="user_name">Имя пользователя:</label>
             <input class="form-control" name="user_name" id="user_name" required="" ng-model="profileData.UserName">
             <span class="help-block" ng-show="profileEditForm.user_name.$error.required">Поле обязательно для заполнения.</span>
         </div>

@@ -10,6 +10,11 @@
             <div class="stock_name_panel panel panel-success">{{stock.Name}}</div>
             <div class="stock_desc_panel panel panel-success">{{stock.Description}}</div>
         </div>
+        <div>
+            <input type="button" class="btn btn-primary" ng-disabled="currentPage==0" ng-click="pageDec()" value="<" />
+            <div class="btn btn-primary" ng-disabled="true">{{currentPage+1}} из {{GetNumber(filtredActions.length/4)}} </div>
+            <input type="button" class="btn btn-primary" ng-disabled="currentPage + 1>=GetNumber(filtredActions.length/4)" ng-click="pageInc()" value=">" />
+        </div>
     </div>
     <div ng-if="loading">
         <img src="../../Content/loading.gif" />

@@ -16,13 +16,17 @@
     }
 }
 
+.main-content{
+    text-align:center;
+}
+
 .popular_panel span {
     font-size: 24px;
 }
 
 .popular_image {
     max-height: 300px;
-    max-width: 90%;
+    max-width: 100%;
     padding: 15px;
 }
 

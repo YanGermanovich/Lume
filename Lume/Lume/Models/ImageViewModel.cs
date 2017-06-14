@@ -20,6 +20,7 @@ namespace Lume.Models
         public string Src { get; set; }
         public double? N { get; set; }
         public double? E { get; set; }
+        public EventViewModel Event { get; set; }
         public bool IsConfirmed { get; set; }
     }
 }

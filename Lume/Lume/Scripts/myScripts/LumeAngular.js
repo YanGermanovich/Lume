@@ -70,6 +70,13 @@ function Initialize(N, E) {
 }
 angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
     .controller('MutualController', ["$scope", '$http', "$cookies", function ($scope, $http, $cookies) {
+        $scope.GetNumber = function ($number) {
+            var x = 0;
+            while (x < $number) {
+                x = x + 1;
+            }
+            return x;
+        }
         $scope.UserName = false;
         $scope.isCompany = false;
         if ($cookies.get('userName') == null) {
@@ -204,7 +211,76 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
             else
                 document.getElementById("uploadFile").value = null;
         };
+        $scope.isNew = false;
+        $scope.New = function ($b) {
+            $scope.isNew = $b;
+        }
+        $scope.allEvents = {};
+        $scope.events = {};
+        $scope.types = {};
+        $scope.SelectedEvents = {};
+        $scope.SelectedType = {};
+        $scope.allSelectedEvents = [];
+        $scope.typeSelect = function ($type) {
+            if (!!$type)
+                $scope.SelectedType = $type;
+            $scope.events = {};
+            $scope.SelectedEvent= false;
+            for (i = 0; i < $scope.allEvents.length; i++) {
+                if ($scope.allEvents[i].TypeId == $scope.SelectedType.Id) {
+                    $scope.events[i] = $scope.allEvents[i];
+                    if (!$scope.SelectedEvent) {
+                        $scope.SelectedEvent = $scope.events[i];
+                    }
+                }
+            }
+        }
+        $scope.deleteEvent = function ($index) {
+            $scope.allSelectedEvents.splice($index, 1);
+        }
+        $scope.Event = {};
+        $scope.allSelectedEvents = [];
+        $scope.addEvent = function ($newEvent, $newType) {
+            $scope.Event = {};
+            if ($scope.isNew) {
+                $scope.Event['Id'] = -1;
+                $scope.Event['Data'] = $newEvent;
+                if (!!$newType) {
+                    $scope.Event['TypeId'] = -1;
+                    $scope.Event['TypeData'] = $newType;
+                }
+                else {
+                    $scope.Event['TypeId'] = $scope.SelectedType.Id;
+                    $scope.Event['TypeData'] = $scope.SelectedType.Data;
+                }
+            }
+            else {
+                $scope.Event['TypeId'] = $scope.SelectedType.Id;
+                $scope.Event['TypeData'] = $scope.SelectedType.Data;
+                $scope.Event['Data'] = $scope.SelectedEvent.Data;
+                $scope.Event['Id'] = $scope.SelectedEvent.Id;
+            }
+            $scope.allSelectedEvents.push($scope.Event);
+        }
+        $http({
+            method: 'GET',
+            url: '../Home/GetAllEvents',
+        }).then(function (response) {
+            $scope.allEvents = response.data.events;
+            $scope.types = response.data.types;
+            $scope.events = $scope.allEvents;
+            $scope.SelectedType = $scope.types[0];
+            $scope.typeSelect();
+            $scope.loading = false;
+        });
 
+        $scope.modalShown = false;
+        $scope.toggleModal = function () {
+            $scope.modalShown = !$scope.modalShown;
+        };
+        $scope.hideModal = function () {
+            $scope.modalShown = !$scope.modalShown;
+        }
         $scope.getFile = function () {
             fileReader.readAsDataUrl($scope.file, $scope)
                 .then(function (result) {
@@ -223,6 +299,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
             fd.append('description', $scope.TempName);
             fd.append("N", lat)
             fd.append("E", lng)
+            fd.append("Event", JSON.stringify($scope.allSelectedEvents[0]))
             $http({
                 url: "../Home/UploadPhoto",
                 method: 'POST',
@@ -246,15 +323,24 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         $scope.allImages = {};
         $http({
             method: 'GET',
-            url: 'Home/GetAllImages',
+            url: '../Home/GetAllImages',
         }).then(function (data) {
             $scope.allImages = data.data;
             $scope.loading = false;
-        });
+            });
+        $scope.currentPage = 0;
+        $scope.pageDec = function () {
+            $scope.filtredImages = [];
+            $scope.currentPage = $scope.currentPage - 1;
+        }
+        $scope.pageInc = function () {
+            $scope.currentPage = $scope.currentPage + 1;
+            $scope.filtredImages = [];
+        }
         $scope.deleteImage = function ($id) {
             $http({
                 method: 'GET',
-                url: 'Home/DeletePhoto?id=' + $id,
+                url: '../Home/DeletePhoto?id=' + $id,
             }).then(function (data) {
                 angular.forEach($scope.allImages, function (value, key) {
                     if (value.Id == $id) {
@@ -264,15 +350,31 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                 $scope.modalShown = false;
             })
         }
+        
+        
         $scope.onlyMine = false;
+        $scope.filtredImages = [];
         $scope.imageFilter = function ($image) {
+            angular.forEach($scope.allImages, function (value, key) {
+                if (value.Id == $image.Id) {
+                    if (key == 0) {
+                    $scope.Img = [];
+                    $scope.filtredImages = [];
+                    }
+                }
+            });
+            var result = true;
             if (!$image.IsConfirmed) {
-                return false;
+                result = false;
             }
             if ($scope.onlyMine) {
-                return $image.isMy;
+                result = $image.isMy;
             }
-            return true;
+            if (result) {
+                result = ( $scope.currentPage * 8  <= $scope.filtredImages.length) && ($scope.filtredImages.length < (($scope.currentPage +1 ) * 8 ));
+                $scope.filtredImages.push(1);
+            }
+            return result;
         }
         $scope.onlyMineChange = function () {
             $scope.onlyMine = !$scope.onlyMine;
@@ -317,7 +419,8 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         }).then(function (data) {
             $scope.allStocks = data.data;
             $scope.loading = false;
-        })
+            $scope.filtredImages = [];
+            })
         $scope.selecteStock = {};
         $scope.ImagesToView = null;
         $scope.modalShown = false;
@@ -381,8 +484,30 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         {
             $scope.isOnlyMine = !$scope.isOnlyMine;
         }
+        $scope.filtredActions = [];
+        $scope.currentPage = 0;
+        $scope.pageDec = function () {
+            $scope.filtredImages = [];
+            $scope.currentPage = $scope.currentPage - 1;
+        }
+        $scope.pageInc = function () {
+            $scope.currentPage = $scope.currentPage + 1;
+            $scope.filtredImages = [];
+        }
         $scope.StockFilter = function ($stock) {
-            return $stock.isTakeParticapent || !$scope.isOnlyMine;
+            angular.forEach($scope.allStocks, function (value, key) {
+                if (value.Id == $stock.Id) {
+                    if (key == 0) {
+                        $scope.filtredActions = [];
+                    }
+                }
+            });
+            var result = $stock.isTakeParticapent || !$scope.isOnlyMine;
+            if (result) {
+                result = ($scope.currentPage * 4  <= $scope.filtredActions.length) && ($scope.filtredActions.length < (($scope.currentPage + 1) * 4));
+                $scope.filtredActions.push(1);
+            }
+            return result;
         }
         $scope.toggleUsersModal = function () {
             $scope.rowCollection = [];
