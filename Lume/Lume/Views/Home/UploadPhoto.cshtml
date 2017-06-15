@@ -22,6 +22,8 @@
                 <div class="infoDiv" id="map_canvas"></div>
             </div>
         </form>
+
+
         <div class="panel">
             <div class="panel-heading">Предпросмотр</div>
             <div class="panel-body">
@@ -36,7 +38,7 @@
         </div>
         
         <div class="form-group">
-            <input id="add_btn" class="btn btn-success" type="button" value="Загрузить фотографию" ng-disabled="!uploadForm.$valid || !validImage || allSelectedEvents<=0" ng-click="AddImage()">
+            <input id="add_btn" class="btn btn-success" type="button" value="Загрузить фотографию" ng-disabled="!uploadForm.$valid || !validImage || (allSelectedEvents<=0  && isCompany)" ng-click="AddImage()">
         </div>
     </div>
     <div ng-if="loading">
@@ -84,7 +86,7 @@
 
 
         <div>
-            <input type="button" class="btn btn-success" value="Добавить" ng-click="addEvent(newEvent, newType)" ng-disabled="(isNew && (!newEvent)) || (allSelectedEvents.length == 1 && isCompany)" />
+            <input type="button" class="btn btn-success" value="Добавить" ng-click="addEvent(newEvent, newType)" ng-disabled="(isNew && (!newEvent)) || (allSelectedEvents.length == 1)" />
         </div>
 
         <div class="allPrizes">
