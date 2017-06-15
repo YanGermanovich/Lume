@@ -69,7 +69,7 @@ function Initialize(N, E) {
     });
 }
 angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
-    .controller('MutualController', ["$scope", '$http', "$cookies", function ($scope, $http, $cookies) {
+    .controller('MutualController', ["$scope", '$http', "$rootScope", function ($scope, $http, $rootScope) {
         $scope.GetNumber = function ($number) {
             var x = 0;
             while (x < $number) {
@@ -118,7 +118,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                 $scope.popularImages = response.data;
             });
     }])
-    .controller('LoginController', ["$scope", '$http', "$timeout", "$cookies", function ($scope, $http, $timeout, $cookies) {
+    .controller('LoginController', ["$scope", '$http', "$timeout", "$rootScope", function ($scope, $http, $timeout, $rootScope) {
         $scope.loginData = {};
         $scope.login = function () {
             $scope.loading = true;
@@ -744,7 +744,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         }
         //DatePicker
     }])
-    .controller('ProfileController', ["$scope", '$http', '$timeout', '$cookies', function ($scope, $http, $timeout, $cookies) {
+    .controller('ProfileController', ["$scope", '$http', '$timeout', '$rootScope', function ($scope, $http, $timeout, $rootScope) {
        
         $scope.allCities = {};
         $scope.cities = {};
