@@ -79,29 +79,29 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
         }
         $scope.UserName = false;
         $scope.isCompany = false;
-        if ($cookies.get('userName') == null) {
+        if ($rootScope['userName'] == null) {
             $scope.loading = true;
             $http.get("../Account/GetName")
                 .then(function (response) {
-                    $cookies.putObject('IsAuthenticated', response.data.IsAuthenticated)
+                    $rootScope['IsAuthenticated'] = response.data.IsAuthenticated;
                     if (response.data.IsAuthenticated) {
-                        $cookies.put('userName', response.data.UserName);
-                        $cookies.putObject('isCompany', response.data.isCompany)
+                        $rootScope['userName']= response.data.UserName;
+                        $rootScope['isCompany'] = response.data.isCompany;
                         $scope.UserName = response.data.UserName;
                     }
                     $scope.loading = false;
                 });
         }
         else {
-            if ($cookies.getObject('IsAuthenticated')) {
-                $scope.UserName = $cookies.get('userName');
-                $scope.isCompany = $cookies.getObject('isCompany');
+            if ($rootScope['IsAuthenticated']) {
+                $scope.UserName = $rootScope['userName'];
+                $scope.isCompany = $rootScope['isCompany'];
             }
         }
         $scope.Logout = function () {
-            $cookies.remove('userName');
-            $cookies.remove('isCompany');
-            $cookies.putObject('IsAuthenticated', false)
+            $rootScope['userName'] = null;
+            $rootScope['isCompany']= null;
+            $rootScope['IsAuthenticated'] = false;
             $scope.UserName = false;
             $scope.isCompany = false;
             $http.get("../Account/LogOut")
@@ -135,8 +135,8 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                 }
                 else {
                     $scope.success = response.data.success;
-                    $cookies.put('userName', response.data.UserName)
-                    $cookies.put('isCompany', response.data.isCompany)
+                    $rootScope['userName'] = response.data.UserName;
+                    $rootScope['isCompany']= response.data.isCompany;
                     $timeout(function () {
                         $scope.success = false;
                         window.location = response.data.Url
@@ -817,7 +817,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                 else {
                     $scope.success = response.data.Success;
                     $timeout(function () {
-                        $cookies.remove('userName');
+                        $rootScope['userName'] = null;
                         $scope.success = false;
                         window.location = response.data.Url
                     }, 1000);
