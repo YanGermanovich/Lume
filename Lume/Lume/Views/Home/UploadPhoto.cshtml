@@ -52,8 +52,8 @@
                         <select class="form-control" name="prizeType" ng-options="type as type.Data for type in types" ng-model="SelectedType" ng-change="typeSelect(SelectedType)"></select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="prize">Событие</label>
-                        <select class="form-control city_country_select" name="prize" ng-options="event as event.Data for event in events" ng-model="SelectedEvent"></select>
+                        <label for="event">Событие</label>
+                        <select class="form-control city_country_select" name="event" ng-options="event as event.Data for event in events" ng-model="SelectedEvent"></select>
                     </div>
                 </div>
             </uib-tab>
@@ -84,7 +84,7 @@
 
 
         <div>
-            <input type="button" class="btn btn-success" value="Добавить" ng-click="addEvent(newEvent, newType)" ng-disabled="(isNew && (!newEvent)) || allSelectedEvents.length == 1" />
+            <input type="button" class="btn btn-success" value="Добавить" ng-click="addEvent(newEvent, newType)" ng-disabled="(isNew && (!newEvent)) || (allSelectedEvents.length == 1 && isCompany)" />
         </div>
 
         <div class="allPrizes">
