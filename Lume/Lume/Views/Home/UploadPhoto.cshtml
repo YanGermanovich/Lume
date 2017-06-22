@@ -41,7 +41,7 @@
             <input id="add_btn" class="btn btn-success" type="button" value="Загрузить фотографию" ng-disabled="!uploadForm.$valid || !validImage || (allSelectedEvents<=0  && isCompany)" ng-click="AddImage()">
         </div>
     </div>
-    <div ng-if="loading">
+    <div ng-if="loading" class="loading_div">
         <img src="../../Content/loading.gif" />
     </div>
     <modal-dialog show='modalShown'>

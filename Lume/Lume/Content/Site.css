@@ -296,6 +296,10 @@ textarea {
     overflow-y:scroll;
 }
 
+.loading_div{
+    max-width: 90%;
+}
+
 .stock_view_img_div {
     
     height: 350px;

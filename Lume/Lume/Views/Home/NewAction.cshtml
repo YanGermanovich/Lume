@@ -55,7 +55,7 @@
             <input id="add_btn" class="btn btn-success" type="button" value="Создать акцию" ng-disabled="!uploadForm.$valid || allSelectedPrizes.length == 0" ng-click="AddStock()">
         </div>
     </div>
-    <div ng-if="loading">
+    <div ng-if="loading" class="loading_div">
         <img src="../../Content/loading.gif" />
     </div>
 

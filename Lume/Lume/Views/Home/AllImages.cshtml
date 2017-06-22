@@ -14,7 +14,7 @@
             <input type="button" class="btn btn-primary" ng-disabled="currentPage + 1>=GetNumber(filtredImages.length/8)" ng-click="pageInc()" value=">" />
         </div>
     </div>
-    <div ng-if="loading">
+    <div ng-if="loading" class="loading_div">
         <img src="../../Content/loading.gif" />
     </div>
     <modal-dialog show='modalShown'>
