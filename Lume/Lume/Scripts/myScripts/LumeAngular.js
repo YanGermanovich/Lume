@@ -87,6 +87,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
                     if (response.data.IsAuthenticated) {
                         $rootScope['userName']= response.data.UserName;
                         $rootScope['isCompany'] = response.data.isCompany;
+                        $scope.isCompany = response.data.isCompany;
                         $scope.UserName = response.data.UserName;
                     }
                     $scope.loading = false;
@@ -475,7 +476,7 @@ angular.module('LumeAngular', ['ui.bootstrap', 'ngCookies'])
             }
             for (var i = 0; i < $scope.rowCollection.length; i++) {
                 if ($scope.rowCollection[i].Email == $item.Email) {
-                    return i < ($scope.currentPage + 1) * 3;
+                    return ($scope.currentUserPage * 3 <= i) && (i < (($scope.currentUserPage + 1) * 3));
                 }
             }
         }
